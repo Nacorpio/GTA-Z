@@ -47,7 +47,7 @@
   <ItemGroup>
     <Compile Include="ControllablePed.cs" />
     <Compile Include="Controllable\TeamPed.cs" />
-    <Compile Include="Controllable\ZombieCollection.cs" />
+    <Compile Include="Controllable\CPedManager.cs" />
     <Compile Include="Controllable\ZombiePed.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

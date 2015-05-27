@@ -5,7 +5,7 @@ namespace GTAZ.Controllable {
 
     public class ZombiePed : ControllablePed {
 
-        public ZombiePed(int uid, string sid) : base(uid, sid,
+        public ZombiePed(int uid) : base(uid, "ZOMBIE",
         new PedProperties {
 
             IsFriendly = false,
@@ -31,13 +31,16 @@ namespace GTAZ.Controllable {
         protected override void OnPedInitialize() {
 
             Ped.AlwaysKeepTask = true;
-            Ped.Task.FightAgainst(Main.player.Character);
-
-            Function.Call(Hash.REQUEST_CLIP_SET, "move_m@drunk@verydrunk");
-
-            Function.Call(Hash.SET_PED_MOVEMENT_CLIPSET, Ped, "move_m@drunk@verydrunk", 0x3e800000);
             
+            Function.Call(Hash.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS, Ped, 1);
+            Function.Call(Hash.SET_PED_FLEE_ATTRIBUTES, Ped, 0, 0);
+            Function.Call(Hash.SET_PED_COMBAT_ATTRIBUTES, Ped, 17, 1);
 
+        }
+
+        protected override void OnPedInRangeOfPlayer(int tick) {
+            if (tick == 0)
+                UI.Notify("A zombie is in range of the player (2 units).");
         }
 
         protected override void OnPedDeadUpdate(int tick) {
@@ -45,7 +48,7 @@ namespace GTAZ.Controllable {
         }
 
         protected override void OnPedAliveUpdate(int tick) {
-            
+          
         }
 
     }

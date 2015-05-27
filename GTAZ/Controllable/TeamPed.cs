@@ -5,7 +5,7 @@ namespace GTAZ.Controllable {
 
     public class TeamPed : ControllablePed {
 
-        public TeamPed(int uid, string sid) : base(uid, sid, new PedProperties {
+        public TeamPed(int uid) : base(uid, "TEAM", new PedProperties {
 
             IsFriendly = true,
 
@@ -25,6 +25,10 @@ namespace GTAZ.Controllable {
         }) {}
 
         protected override void OnPedAliveUpdate(int tick) {
+        }
+
+        protected override void OnPedInRangeOfPlayer(int tick) {
+
         }
 
         protected override void OnPedDeadUpdate(int tick) {

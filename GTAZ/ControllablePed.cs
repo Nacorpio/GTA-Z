@@ -78,7 +78,7 @@ namespace GTAZ {
 
             }
 
-            RelationshipGroup = (_props.IsFriendly ? Main.PLAYER_GROUP : Main.ENEMY_GROUP);
+            RelationshipGroup = (_props.IsFriendly ? Main.PlayerGroup : Main.EnemyGroup);
             Ped.RelationshipGroup = RelationshipGroup;
 
             var randomWeapon = WeaponHash.Unarmed;
@@ -136,6 +136,7 @@ namespace GTAZ {
 
         private int _deadTicks = 0;
         private int _aliveTicks = 0;
+        private int _inRangeP = 0;
 
         protected override void OnActiveUpdate(int activeTick, int tick) {
 
@@ -145,17 +146,34 @@ namespace GTAZ {
 
             if (_ped.IsAlive) {
 
+                _deadTicks = 0;
+
                 // The ped is alive.
                 OnPedAliveUpdate(_aliveTicks);
                 _aliveTicks++;
 
+                // Checks if the ped is in range of the player.
+                if (_ped.IsInRangeOf(Main.player.Character.Position, 1.5f)) {
+
+                    OnPedInRangeOfPlayer(_inRangeP);
+                    _inRangeP++;
+
+                } else {
+
+                    _inRangeP = 0;
+
+                }
+
             } else if (_ped.IsDead) {
+
+                _aliveTicks = 0;
 
                 if (_props.AttachBlip && _ped.CurrentBlip != null) {
                     _ped.CurrentBlip.Remove();
                 }
 
                 // The ped is dead.
+
                 OnPedDeadUpdate(_deadTicks);
                 _deadTicks++;
 
@@ -194,6 +212,11 @@ namespace GTAZ {
         /// <param name="tick">The current tick.</param>
         protected abstract void OnPedAliveUpdate(int tick);
 
+        /// <summary>
+        /// This event fires every update where the controllable ped is in range of a player.
+        /// </summary>
+        /// <param name="tick">The current tick of this event.</param>
+        protected abstract void OnPedInRangeOfPlayer(int tick);
 
     }
 

@@ -11,10 +11,10 @@ namespace GTAZ
 
     public class Main : Script {
 
-        public static int PLAYER_GROUP;
-        public static int ENEMY_GROUP;
+        public static int PlayerGroup;
+        public static int EnemyGroup;
 
-        public static List<ControllablePed> peds = new List<ControllablePed>();
+        private readonly static CPedManager PedManager = new CPedManager();
         public static Player player;
 
         public Main() {
@@ -24,45 +24,44 @@ namespace GTAZ
 
             player = Game.Player;
 
-            PLAYER_GROUP = World.AddRelationShipGroup("PLAYER");
-            ENEMY_GROUP = World.AddRelationShipGroup("ENEMY");
+            PlayerGroup = World.AddRelationShipGroup("PLAYER");
+            EnemyGroup = World.AddRelationShipGroup("ENEMY");
 
-            World.SetRelationshipBetweenGroups(Relationship.Hate, PLAYER_GROUP, ENEMY_GROUP);
+            World.SetRelationshipBetweenGroups(Relationship.Dislike, PlayerGroup, EnemyGroup);
+            player.Character.RelationshipGroup = PlayerGroup;
 
-            player.Character.RelationshipGroup = PLAYER_GROUP;
+            Interval = 1;
 
         }
 
         private static void OnKeyDown(object sender, KeyEventArgs keyEventArgs) {
 
-            var tped = new TeamPed(peds.Count, "z" + peds.Count);
-            var zped = new ZombiePed(peds.Count, "z" + peds.Count);
-
-            Ped p = null;
-
             switch (keyEventArgs.KeyCode) {
 
                 case Keys.F5:
 
-                    p = World.CreatePed(PedHash.Swat01SMY, player.Character.Position);
-                    tped.Control(p);
+                    PedManager.Create(new TeamPed(PedManager.Count), PedHash.Swat01SMY, player.Character.Position);
                     break;
 
                 case Keys.F7:
 
-                    p = World.CreatePed(PedHash.Zombie01, player.Character.Position.Around(25f));
-                    zped.Control(p);
+                    PedManager.Create(new ZombiePed(PedManager.Count), PedHash.Zombie01, player.Character.Position.Around(5f));
                     break;
 
             }
 
-            peds.Add(tped);
-            peds.Add(zped);
-
         }
 
         private static void OnTick(object sender, EventArgs eventArgs) {
-            peds.ForEach(p => { p.OnTick(); });
+
+            Function.Call(Hash.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+            Function.Call(Hash.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+            Function.Call(Hash.SET_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+            Function.Call(Hash.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+            Function.Call(Hash.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+
+            PedManager.Tick();
+
         }
     }
 

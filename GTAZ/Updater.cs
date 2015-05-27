@@ -130,7 +130,7 @@ namespace GTAV_purge_mod {
         /// <summary>
         /// Returns how many seconds this updater has been alive.
         /// </summary>
-        public int SecondsAlive { get { return (int) (1/Game.FPS)*_tick;  }}
+        public int SecondsAlive { get { return _tick/1000; }}
 
         /// <summary>
         /// Returns whether this Updating instance is active.
