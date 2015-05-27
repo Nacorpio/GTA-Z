@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using GTA;
 using GTA.Native;
 using GTAZ.Controllable;
+using mlgthatsme;
 
 namespace GTAZ
 {
@@ -50,7 +51,12 @@ namespace GTAZ
 
                 case Keys.F7:
 
-                    ControlManager.CreatePed(new ZombiePed(ControlManager.Count), PedHash.Zombie01, Player.Character.Position.Around(5f));
+                    for (var i = 0; i < 20; i++) {
+                        var rand = new Random(Game.GameTime + (i * 10));
+                        ControlManager.CreatePed(new ZombiePed(ControlManager.Count), PedHash.Zombie01, Player.Character.Position.Around(rand.Next(0, 500)));
+                    }
+
+                    UI.Notify("Zombies has been generated!");
                     break;
 
             }

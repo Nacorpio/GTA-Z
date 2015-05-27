@@ -12,7 +12,7 @@ namespace GTAZ.Controllable {
             IsFriendly = false,
 
             SpawnRandomWeapons = true,
-            RandomWeapons = new []{WeaponHash.Knife, WeaponHash.Dagger, WeaponHash.Crowbar, WeaponHash.Bat, WeaponHash.Hammer, WeaponHash.Hatchet, WeaponHash.GolfClub},
+            RandomWeapons = new [] {WeaponHash.Unarmed, WeaponHash.Knife, WeaponHash.Dagger, WeaponHash.Crowbar, WeaponHash.Bat, WeaponHash.Hammer, WeaponHash.Hatchet, WeaponHash.GolfClub},
 
             Weapons = null,
             PreferredWeapon = WeaponHash.Unarmed,

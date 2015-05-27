@@ -60,13 +60,15 @@ namespace GTAZ.Controllable {
 
         protected override void OnPlayerMenuOpen() {
 
+            
+
             if (Menu == null)
+
                 Menu = new Menu("Team Member (" + UniqueId + ")", new GTA.MenuItem[] {
                     new MenuLabel("Seconds alive: " + Tick, false), 
                 });
-                Main.Viewport.AddMenu(Menu);
 
-            Menu.;
+                Main.Viewport.AddMenu(Menu);
 
         }
 

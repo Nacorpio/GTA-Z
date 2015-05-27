@@ -116,7 +116,7 @@ namespace GTAZ.Controllable {
         }
 
         protected override void OnEntityPedNearbyUpdate(Ped ped, int tick) {
-            throw new NotImplementedException();
+            
         }
 
         //
@@ -141,7 +141,9 @@ namespace GTAZ.Controllable {
 
         //
 
-        protected abstract override void OnEntityAliveUpdate(int tick);
+        protected override void OnEntityAliveUpdate(int tick) {
+            
+        }
 
         protected abstract override void OnEntityInitialize();
 

@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="mlgthatsmeMOD">
+      <HintPath>..\..\..\..\..\Desktop\GTA V Modding\mlgthatsmeMOD.dll</HintPath>
+    </Reference>
     <Reference Include="ScriptHookVDotNet">
       <HintPath>D:\Games\SteamLibrary\SteamApps\common\Grand Theft Auto V\ScriptHookVDotNet.dll</HintPath>
     </Reference>
@@ -53,6 +56,7 @@
     <Compile Include="Controllable\TeamVehicle.cs" />
     <Compile Include="Controllable\ZombiePed.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Population\ControllablePopulator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Updater.cs" />
   </ItemGroup>
