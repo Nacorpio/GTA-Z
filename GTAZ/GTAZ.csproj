@@ -45,9 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ControllablePed.cs" />
+    <Compile Include="Controllable\ControllableEntity.cs" />
+    <Compile Include="Controllable\ControllablePed.cs" />
+    <Compile Include="Controllable\ControllableVehicle.cs" />
     <Compile Include="Controllable\TeamPed.cs" />
-    <Compile Include="Controllable\CPedManager.cs" />
+    <Compile Include="Controllable\ControlManager.cs" />
     <Compile Include="Controllable\ZombiePed.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,4 +1,5 @@
-﻿using GTA;
+﻿using System.Windows.Forms;
+using GTA;
 using GTA.Native;
 
 namespace GTAZ.Controllable {
@@ -28,29 +29,40 @@ namespace GTAZ.Controllable {
 
         }) {}
 
-        protected override void OnPedInitialize() {
-
-            Ped.AlwaysKeepTask = true;
+        protected override void OnEntityAlive() {
             
-            Function.Call(Hash.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS, Ped, 1);
-            Function.Call(Hash.SET_PED_FLEE_ATTRIBUTES, Ped, 0, 0);
-            Function.Call(Hash.SET_PED_COMBAT_ATTRIBUTES, Ped, 17, 1);
+        }
+
+        protected override void OnEntityDead() {
+           
+        }
+
+        protected override void OnEntityPedNearbyUpdate(Ped ped, int tick) {
+            
+        }
+
+        protected override void OnEntityPlayerNearbyUpdate(int tick) {
 
         }
 
-        protected override void OnPedInRangeOfPlayer(int tick) {
-            if (tick == 0)
-                UI.Notify("A zombie is in range of the player (2 units).");
-        }
-
-        protected override void OnPedDeadUpdate(int tick) {
+        protected override void OnEntityPedNearby(Ped ped) {
 
         }
 
-        protected override void OnPedAliveUpdate(int tick) {
-          
+        protected override void OnEntityPlayerNearby() {
         }
 
+        protected override void OnEntityAliveUpdate(int tick) {
+
+        }
+
+        protected override void OnPlayerKeyDown(KeyEventArgs e) {
+        }
+
+        protected override void OnEntityInitialize() {
+            Ped.AlwaysKeepTask = true;
+            Ped.Task.FightAgainst(Main.Player.Character);
+        }
     }
 
 }

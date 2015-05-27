@@ -1,4 +1,5 @@
-﻿using GTA;
+﻿using System.Windows.Forms;
+using GTA;
 using GTA.Native;
 
 namespace GTAZ.Controllable {
@@ -20,23 +21,48 @@ namespace GTAZ.Controllable {
             AttachBlip = true,
             BlipColor = BlipColor.Green,
 
-            Teleport = false
+            Teleport = false,
+            RecordKeys = true
 
         }) {}
 
-        protected override void OnPedAliveUpdate(int tick) {
+        protected override void OnEntityAlive() {
+           
         }
 
-        protected override void OnPedInRangeOfPlayer(int tick) {
+        protected override void OnEntityDead() {
+            UI.Notify("A team member died!");
+        }
+
+        protected override void OnEntityPedNearbyUpdate(Ped ped1, int tick) {
 
         }
 
-        protected override void OnPedDeadUpdate(int tick) {
-            if (tick == 0)
-                UI.Notify("A team member just died!");
+        protected override void OnEntityPlayerNearbyUpdate(int tick) {
+
         }
 
-        protected override void OnPedInitialize() {
+        protected override void OnEntityPedNearby(Ped ped1) {
+
+        }
+
+        protected override void OnEntityPlayerNearby() {
+        }
+
+        protected override void OnPlayerKeyDown(KeyEventArgs e) {
+            switch (e.KeyCode) {
+                case Keys.E:
+                    UI.Notify("It works, of course.");
+                    break;
+            }
+        }
+
+        protected override void OnEntityAliveUpdate(int tick) {
+
+        }
+
+        protected override void OnEntityInitialize() {
+
         }
 
     }

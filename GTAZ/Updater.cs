@@ -26,7 +26,7 @@ namespace GTAV_purge_mod {
             OnUpdate(_tick);
 
             if (_actionQueue.ContainsKey(_tick)) {
-                _actionQueue[_tick].Invoke();
+                _actionQueue[_tick].DynamicInvoke();
             }
 
             if (_tick == 0 || _tick == _startTick) {

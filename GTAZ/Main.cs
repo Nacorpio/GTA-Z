@@ -14,21 +14,21 @@ namespace GTAZ
         public static int PlayerGroup;
         public static int EnemyGroup;
 
-        private readonly static CPedManager PedManager = new CPedManager();
-        public static Player player;
+        public readonly static ControlManager ControlManager = new ControlManager();
+        public static Player Player;
 
         public Main() {
             
             Tick += OnTick;
             KeyDown += OnKeyDown;
 
-            player = Game.Player;
+            Player = Game.Player;
 
             PlayerGroup = World.AddRelationShipGroup("PLAYER");
             EnemyGroup = World.AddRelationShipGroup("ENEMY");
 
             World.SetRelationshipBetweenGroups(Relationship.Dislike, PlayerGroup, EnemyGroup);
-            player.Character.RelationshipGroup = PlayerGroup;
+            Player.Character.RelationshipGroup = PlayerGroup;
 
             Interval = 1;
 
@@ -36,16 +36,18 @@ namespace GTAZ
 
         private static void OnKeyDown(object sender, KeyEventArgs keyEventArgs) {
 
+            ControlManager.KeyDown(keyEventArgs);
+
             switch (keyEventArgs.KeyCode) {
 
                 case Keys.F5:
 
-                    PedManager.Create(new TeamPed(PedManager.Count), PedHash.Swat01SMY, player.Character.Position);
+                    ControlManager.CreatePed(new TeamPed(ControlManager.Count), PedHash.Swat01SMY, Player.Character.Position);
                     break;
 
                 case Keys.F7:
 
-                    PedManager.Create(new ZombiePed(PedManager.Count), PedHash.Zombie01, player.Character.Position.Around(5f));
+                    ControlManager.CreatePed(new ZombiePed(ControlManager.Count), PedHash.Zombie01, Player.Character.Position.Around(5f));
                     break;
 
             }
@@ -60,7 +62,7 @@ namespace GTAZ
             Function.Call(Hash.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
             Function.Call(Hash.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
 
-            PedManager.Tick();
+            ControlManager.Tick();
 
         }
     }
