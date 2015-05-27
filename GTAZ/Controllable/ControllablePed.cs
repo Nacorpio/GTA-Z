@@ -33,6 +33,9 @@ namespace GTAZ.Controllable {
 
             public bool RecordKeys;
 
+            public bool HasMenu;
+            public Keys MenuKey;
+
         }
 
         private readonly PedProperties _props;
@@ -43,6 +46,15 @@ namespace GTAZ.Controllable {
 
         public Ped Ped {
             get { return (Ped) Entity; }
+        }
+
+        private void AttachBlip(Entity ped) {
+            if (_props.AttachBlip) {
+
+                ped.AddBlip()
+                    .Color = _props.BlipColor;
+
+            }
         }
 
         protected override void ApplyChanges() {
@@ -73,12 +85,7 @@ namespace GTAZ.Controllable {
 
             }
 
-            if (_props.AttachBlip) {
-
-                ped.AddBlip()
-                    .Color = _props.BlipColor;
-
-            }
+            AttachBlip(ped);
 
             if (_props.SpawnRandomWeapons) {
 
@@ -112,25 +119,27 @@ namespace GTAZ.Controllable {
             throw new NotImplementedException();
         }
 
-        protected override void OnEntityDeadUpdate(int tick) {
-            if (_props.AttachBlip && Entity.CurrentBlip != null) {
-                Entity.CurrentBlip.Remove();
-            }
-        }
-
         //
 
-        protected override void OnEntityPlayerKeyDown(KeyEventArgs e) {
+        protected sealed override void OnEntityPlayerKeyDown(KeyEventArgs e) {
 
             if (e == null || !_props.RecordKeys) {
                 return;
+            }
+
+            if (_props.HasMenu && e.KeyCode == _props.MenuKey) {
+                OnPlayerMenuOpen();
             }
 
             OnPlayerKeyDown(e);
 
         }
 
+        protected abstract void OnPlayerMenuOpen();
+
         protected abstract void OnPlayerKeyDown(KeyEventArgs e);
+
+        //
 
         protected abstract override void OnEntityAliveUpdate(int tick);
 

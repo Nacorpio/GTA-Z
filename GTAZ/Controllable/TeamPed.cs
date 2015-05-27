@@ -1,12 +1,16 @@
-﻿using System.Windows.Forms;
+﻿using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 using GTA;
 using GTA.Native;
+using Menu = GTA.Menu;
 
 namespace GTAZ.Controllable {
 
     public class TeamPed : ControllablePed {
 
-        public TeamPed(int uid) : base(uid, "TEAM", new PedProperties {
+        public static GTA.Menu Menu;
+
+        public TeamPed(int uid) : base(uid, "TEAM_PED", new PedProperties {
 
             IsFriendly = true,
 
@@ -22,7 +26,10 @@ namespace GTAZ.Controllable {
             BlipColor = BlipColor.Green,
 
             Teleport = false,
-            RecordKeys = true
+            RecordKeys = true,
+
+            HasMenu = true,
+            MenuKey = Keys.E,
 
         }) {}
 
@@ -49,16 +56,22 @@ namespace GTAZ.Controllable {
         protected override void OnEntityPlayerNearby() {
         }
 
-        protected override void OnPlayerKeyDown(KeyEventArgs e) {
-            switch (e.KeyCode) {
-                case Keys.E:
-                    UI.Notify("It works, of course.");
-                    break;
-            }
+        protected override void OnPlayerKeyDown(KeyEventArgs e) {}
+
+        protected override void OnPlayerMenuOpen() {
+
+            if (Menu == null)
+                Menu = new Menu("Team Member (" + UniqueId + ")", new GTA.MenuItem[] {
+                    new MenuLabel("Seconds alive: " + Tick, false), 
+                });
+                Main.Viewport.AddMenu(Menu);
+
+            Menu.;
+
         }
 
         protected override void OnEntityAliveUpdate(int tick) {
-
+            
         }
 
         protected override void OnEntityInitialize() {

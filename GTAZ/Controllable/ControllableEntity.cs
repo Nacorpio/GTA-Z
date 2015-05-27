@@ -7,19 +7,22 @@ namespace GTAZ.Controllable {
     public abstract class ControllableEntity : Updater {
 
         private Entity _entity;
+        public const float InteractionDistance = 2f;
 
         protected ControllableEntity(int uid, string groupId) {
             UniqueId = uid;
             GroupId = groupId;
         }
 
+        //
+
         public string GroupId { get; private set; }
 
         public int UniqueId { get; private set; }
 
-        public Entity Entity {
-            get { return _entity; }
-        }
+        public Entity Entity { get { return _entity; }}
+
+        //
 
         public ControllableEntity Control(Entity entity) {
 
@@ -38,19 +41,23 @@ namespace GTAZ.Controllable {
             if (e == null)
                 return null;
 
-            if (IsActive && Entity.IsInRangeOf(Main.Player.Character.Position, 2f))
+            if (IsActive && Entity.IsInRangeOf(Main.Player.Character.Position, InteractionDistance))
                 OnEntityPlayerKeyDown(e);
             
             return this;
 
         }
 
+        //
+
         protected override void OnUpdate(int tick) {
             IsActive = _entity != null && (_entity.IsAlive || _entity.IsDead);
         }
 
-        private int _aliveTicks, _deadTicks;
+        private int _aliveTicks;
         private int _playerNearbyTicks, _pedNearbyTicks;
+
+        //
 
         protected override void OnActiveUpdate(int activeTick, int tick) {
 
@@ -60,7 +67,6 @@ namespace GTAZ.Controllable {
 
             if (_entity.IsAlive) {
 
-                _deadTicks = 0;
                 OnEntityAliveUpdate(_aliveTicks);
 
                 if (_aliveTicks == 0)
@@ -70,7 +76,7 @@ namespace GTAZ.Controllable {
 
                 foreach (var entity in Main.ControlManager.LivingPeds) {
 
-                    if (Entity.IsInRangeOf(entity.Entity.Position, 2f)) {
+                    if (Entity.IsInRangeOf(entity.Entity.Position, InteractionDistance)) {
 
                         OnEntityPedNearbyUpdate((Ped) entity.Entity, _pedNearbyTicks);
 
@@ -88,7 +94,7 @@ namespace GTAZ.Controllable {
 
                 }
 
-                if (Entity.IsInRangeOf(Main.Player.Character.Position, 2f)) {
+                if (Entity.IsInRangeOf(Main.Player.Character.Position, InteractionDistance)) {
                   
                     OnEntityPlayerNearbyUpdate(_playerNearbyTicks);
 
@@ -107,12 +113,11 @@ namespace GTAZ.Controllable {
             } else if (_entity.IsDead) {
 
                 _aliveTicks = 0;
-                OnEntityDeadUpdate(_deadTicks);
 
-                if (_deadTicks == 0)
-                    OnEntityDead();
+                OnEntityDead();
+                RemoveEntity();
 
-                _deadTicks++;
+                return;
 
             }
 
@@ -142,13 +147,17 @@ namespace GTAZ.Controllable {
 
         protected abstract void OnEntityAliveUpdate(int tick);
 
-        protected abstract void OnEntityDeadUpdate(int tick);
-
         //
 
         protected abstract void OnEntityAlive();
 
         protected abstract void OnEntityDead();
+
+        private void RemoveEntity() {
+            if (Entity.CurrentBlip != null)
+                Entity.CurrentBlip.Remove();
+            Main.ControlManager.Remove(this);
+        }
 
     }
 

@@ -6,7 +6,7 @@ namespace GTAZ.Controllable {
 
     public class ZombiePed : ControllablePed {
 
-        public ZombiePed(int uid) : base(uid, "ZOMBIE",
+        public ZombiePed(int uid) : base(uid, "ZOMBIE_PED",
         new PedProperties {
 
             IsFriendly = false,
@@ -25,16 +25,16 @@ namespace GTAZ.Controllable {
             AttachBlip = true,
             BlipColor = BlipColor.Red,
 
-            Teleport = false
+            Teleport = false,
+            HasMenu = false
 
         }) {}
 
-        protected override void OnEntityAlive() {
-            
+        protected override void OnEntityDead() {
         }
 
-        protected override void OnEntityDead() {
-           
+        protected override void OnEntityAlive() {
+            
         }
 
         protected override void OnEntityPedNearbyUpdate(Ped ped, int tick) {
@@ -54,6 +54,10 @@ namespace GTAZ.Controllable {
 
         protected override void OnEntityAliveUpdate(int tick) {
 
+        }
+
+        protected override void OnPlayerMenuOpen() {
+            throw new System.NotImplementedException();
         }
 
         protected override void OnPlayerKeyDown(KeyEventArgs e) {

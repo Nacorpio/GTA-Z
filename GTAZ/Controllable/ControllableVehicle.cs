@@ -6,7 +6,7 @@ namespace GTAZ.Controllable {
 
     public abstract class ControllableVehicle : ControllableEntity {
 
-        protected struct VehicleProperties {
+        public struct VehicleProperties {
 
             public bool Teleport;
             public int X, Y, Z;
@@ -82,22 +82,12 @@ namespace GTAZ.Controllable {
         }
 
         protected override void OnEntityPedNearbyUpdate(Ped ped, int tick) {
-            throw new System.NotImplementedException();
-        }
-
-        protected override void OnEntityDeadUpdate(int tick) {
-
-            var vehicle = (Vehicle)Entity;
-
-            if (_vehicleProperties.AttachBlip && vehicle.CurrentBlip != null) {
-                vehicle.CurrentBlip.Remove();
-            }
 
         }
 
         //
 
-        protected override void OnEntityPlayerKeyDown(KeyEventArgs e) {
+        protected sealed override void OnEntityPlayerKeyDown(KeyEventArgs e) {
 
             if (e == null)
                 return;

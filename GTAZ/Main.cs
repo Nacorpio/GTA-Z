@@ -15,6 +15,8 @@ namespace GTAZ
         public static int EnemyGroup;
 
         public readonly static ControlManager ControlManager = new ControlManager();
+
+        public static Viewport Viewport;
         public static Player Player;
 
         public Main() {
@@ -22,6 +24,7 @@ namespace GTAZ
             Tick += OnTick;
             KeyDown += OnKeyDown;
 
+            Viewport = View;
             Player = Game.Player;
 
             PlayerGroup = World.AddRelationShipGroup("PLAYER");
@@ -42,7 +45,7 @@ namespace GTAZ
 
                 case Keys.F5:
 
-                    ControlManager.CreatePed(new TeamPed(ControlManager.Count), PedHash.Swat01SMY, Player.Character.Position);
+                    ControlManager.CreatePed(new TeamPed(3333 + ControlManager.Count), PedHash.Swat01SMY, Player.Character.Position);
                     break;
 
                 case Keys.F7:
