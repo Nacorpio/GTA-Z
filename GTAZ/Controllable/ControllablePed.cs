@@ -4,10 +4,11 @@ using System.Windows.Forms;
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using GTAZ.Assembly;
 
 namespace GTAZ.Controllable {
 
-    public abstract class ControllablePed : ControllableEntity {
+    public abstract class ControllablePed : EntityAssembly {
 
         protected struct PedProperties {
 
@@ -57,6 +58,8 @@ namespace GTAZ.Controllable {
 
             }
         }
+
+        //
 
         protected override void ApplyChanges() {
 
@@ -123,6 +126,11 @@ namespace GTAZ.Controllable {
         }
 
         //
+
+        protected override void InitializeAssembly() {
+            // Initialize the Parts every wrapped ped should have in its Assembly.
+
+        }
 
         protected sealed override void OnEntityPlayerKeyDown(KeyEventArgs e) {
 

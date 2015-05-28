@@ -1,10 +1,7 @@
-﻿using System.Runtime.CompilerServices;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using GTA;
 using GTA.Native;
-using GTAZ;
 using GTAZ.Controllable;
-using Menu = GTA.Menu;
 
 namespace GTAZ.Peds {
 

@@ -48,13 +48,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assembly\EntityAssembly.cs" />
+    <Compile Include="Assembly\EntityPart.cs" />
     <Compile Include="Controllable\ControllableEntity.cs" />
     <Compile Include="Controllable\ControllablePed.cs" />
     <Compile Include="Controllable\ControllableVehicle.cs" />
     <Compile Include="Peds\SurvivorPed1.cs" />
     <Compile Include="Peds\TeamPed.cs" />
     <Compile Include="Controllable\ControlManager.cs" />
-    <Compile Include="Controllable\TeamVehicle.cs" />
+    <Compile Include="Vehicles\TeamVehicle.cs" />
     <Compile Include="Peds\ZombiePed.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Population\ControllablePopulator.cs" />

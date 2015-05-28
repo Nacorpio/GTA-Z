@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using GTA;
+using GTAZ.Controllable;
 
-namespace GTAZ.Controllable {
+namespace GTAZ.Vehicles {
 
     public class TeamVehicle : ControllableVehicle {
 
