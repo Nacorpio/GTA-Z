@@ -33,16 +33,18 @@ namespace GTAZ.Controllable {
 
         }
 
-        public ControlManager CreateVehicle(ControllableVehicle cveh, VehicleHash model, Vector3 position) {
+        public Vehicle CreateVehicle(ControllableVehicle cveh, VehicleHash model, Vector3 position, float heading = 0) {
 
-            var var1 = World.CreateVehicle(model, position);
+            var var1 = World.CreateVehicle(model, position, heading);
+            
             var var2 = cveh.Control(var1);
 
             if (var2 == null) {
                 return null;
             }
 
-            return Add(var2);
+            Add(var2);
+            return var1;
 
         }
 
@@ -93,13 +95,13 @@ namespace GTAZ.Controllable {
 
         public IEnumerable<ControllableEntity> LivingPeds {
             get {
-                return elements.Where(e => e is ControllablePed);
+                return Peds.Where(e => e.IsActive);
             }
         }
 
         public IEnumerable<ControllableEntity> LivingVehicles {
             get {
-                return elements.Where(e => e is ControllableVehicle);
+                return Vehicles.Where(v => v.IsActive);
             }
         }
 
@@ -129,12 +131,12 @@ namespace GTAZ.Controllable {
             return AliveForMilliseconds(uid, seconds * 1000);
         }
 
-        public IEnumerable<ControllablePed> Peds {
-            get { return (IEnumerable<ControllablePed>) Entities.Where(e => e is ControllablePed); }
+        public IEnumerable<ControllableEntity> Peds {
+            get { return Entities.Where(e => e.GroupId.Contains("PED")); }
         }
 
-        public IEnumerable<ControllableVehicle> Vehicles {
-            get { return (IEnumerable<ControllableVehicle>) Entities.Where(e => e is ControllableVehicle); }
+        public IEnumerable<ControllableEntity> Vehicles {
+            get { return Entities.Where(e => e.GroupId.Contains("VEHICLE")); }
         } 
 
         public List<ControllableEntity> Entities {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using GTA;
@@ -37,10 +38,14 @@ namespace GTAZ
             World.SetRelationshipBetweenGroups(Relationship.Dislike, PlayerGroup, EnemyGroup);
             Player.Character.RelationshipGroup = PlayerGroup;
 
-            _populator = new ControllablePopulator(ControlManager, 20, 350f);
+            _populator = new ControllablePopulator(ControlManager, 8, 3, 200f, 350f);
 
             Interval = 1;
 
+        }
+
+        public static void Log(object msg) {
+            File.AppendAllText("log.txt", msg + Environment.NewLine);
         }
 
         private static void OnKeyDown(object sender, KeyEventArgs keyEventArgs) {
@@ -50,7 +55,6 @@ namespace GTAZ
             switch (keyEventArgs.KeyCode) {
 
                 case Keys.F5:
-
                     break;
 
             }
@@ -67,8 +71,11 @@ namespace GTAZ
 
             ControlManager.Tick();
 
-            _populator.PopulatePeds(new ZombiePed(ControlManager.Count), PedHash.Zombie01, Main.Player.Character.Position, 50, 300, new Random(Game.GameTime));
+            _populator.PopulateWithPed(new ZombiePed(ControlManager.LivingPeds.ToList().Count), PedHash.Zombie01, Player.Character.Position, 25, 150, new Random(Game.GameTime));
             _populator.DespawnPeds();
+
+            _populator.PopulateWithAbandonedVehicle(Player.Character.Position, 50, 300, new Random(Game.GameTime));
+            _populator.DespawnVehicles();
 
         }
     }

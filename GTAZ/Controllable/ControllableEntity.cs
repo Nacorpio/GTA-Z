@@ -29,6 +29,7 @@ namespace GTAZ.Controllable {
             if (_entity == null)
 
                 _entity = entity;
+                
                 ApplyChanges();
                 
 

@@ -23,6 +23,10 @@ namespace GTAZ.Controllable {
             public int[] TiresToBurst;
 
             public bool IsDrivable;
+
+            public bool ModifyEngine;
+            public bool ModifyColors;
+
             public bool IsEngineRunning;
             public float EngineHealth;
 
@@ -53,11 +57,15 @@ namespace GTAZ.Controllable {
                 vehicle.Position = new Vector3(_vehicleProperties.X, _vehicleProperties.Y, _vehicleProperties.Z);
             }
 
-            vehicle.NumberPlate = _vehicleProperties.NumberPlateText;
+            if (!string.IsNullOrWhiteSpace(_vehicleProperties.NumberPlateText)) {
+                vehicle.NumberPlate = _vehicleProperties.NumberPlateText;
+            }
 
-            vehicle.PrimaryColor = _vehicleProperties.PrimaryColor;
-            vehicle.SecondaryColor = _vehicleProperties.SecondaryColor;
-            vehicle.WindowTint = _vehicleProperties.WindowTint;
+            if (_vehicleProperties.ModifyColors) {
+                vehicle.PrimaryColor = _vehicleProperties.PrimaryColor;
+                vehicle.SecondaryColor = _vehicleProperties.SecondaryColor;
+                vehicle.WindowTint = _vehicleProperties.WindowTint;
+            }
 
             if (_vehicleProperties.SmashWindows) {
                 foreach (var window in _vehicleProperties.WindowsToSmash) {
@@ -72,12 +80,17 @@ namespace GTAZ.Controllable {
             }
 
             vehicle.IsDriveable = _vehicleProperties.IsDrivable;
-            vehicle.EngineHealth = _vehicleProperties.EngineHealth;
-            vehicle.EngineRunning = _vehicleProperties.IsEngineRunning;
+
+            if (_vehicleProperties.ModifyEngine) {
+                vehicle.EngineHealth = _vehicleProperties.EngineHealth;
+                vehicle.EngineRunning = _vehicleProperties.IsEngineRunning;
+            }
 
             if (_vehicleProperties.AttachBlip) {
                 vehicle.AddBlip().Color = _vehicleProperties.BlipColor;
             }
+
+            Main.Log("It works!");
 
         }
 
