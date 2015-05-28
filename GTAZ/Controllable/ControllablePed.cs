@@ -9,7 +9,7 @@ namespace GTAZ.Controllable {
 
     public abstract class ControllablePed : ControllableEntity {
 
-        protected struct PedProperties {
+        public struct PedProperties {
 
             public bool Teleport;
             public int X, Y, Z;

@@ -1,8 +1,9 @@
 ﻿using System.Windows.Forms;
 using GTA;
 using GTA.Native;
+using GTAZ.Controllable;
 
-namespace GTAZ.Controllable {
+namespace GTAZ.Peds {
 
     public class ZombiePed : ControllablePed {
 
@@ -18,7 +19,7 @@ namespace GTAZ.Controllable {
             PreferredWeapon = WeaponHash.Unarmed,
 
             Armor = 50,
-            Accuracy = 10,
+            Accuracy = 5,
             MaxHealth = 75,
             Health = 75,
 
@@ -30,43 +31,32 @@ namespace GTAZ.Controllable {
 
         }) {}
 
-        protected override void OnEntityDead() {
-        }
+        protected override void OnEntityDead() {}
 
-        protected override void OnEntityAlive() {
-            
-        }
+        protected override void OnEntityAlive() {}
 
-        protected override void OnEntityPedNearbyUpdate(Ped ped, int tick) {
-            
-        }
+        protected override void OnEntityPedNearbyUpdate(Ped ped, int tick) {}
 
-        protected override void OnEntityPlayerNearbyUpdate(int tick) {
+        protected override void OnEntityPlayerNearbyUpdate(int tick) {}
 
-        }
+        protected override void OnEntityPedNearby(Ped ped) {}
 
-        protected override void OnEntityPedNearby(Ped ped) {
+        protected override void OnEntityPlayerNearby() {}
 
-        }
+        protected override void OnEntityAliveUpdate(int tick) {}
 
-        protected override void OnEntityPlayerNearby() {
-        }
-
-        protected override void OnEntityAliveUpdate(int tick) {
-
-        }
-
-        protected override void OnPlayerMenuOpen() {
-            throw new System.NotImplementedException();
-        }
+        protected override void OnPlayerMenuOpen() {}
 
         protected override void OnPlayerKeyDown(KeyEventArgs e) {
         }
 
         protected override void OnEntityInitialize() {
+
             Ped.AlwaysKeepTask = true;
-            Ped.Task.FightAgainst(Main.Player.Character);
+            Ped.Task.GuardCurrentPosition();
+
         }
+
     }
 
 }

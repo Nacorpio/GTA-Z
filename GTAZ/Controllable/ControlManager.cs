@@ -112,13 +112,11 @@ namespace GTAZ.Controllable {
         public ControlManager Remove(ControllableEntity entity) {
             if (Contains(entity))
                 elements.Remove(entity);
-                // entity.Entity.Delete();
             return this;
         }
 
         public ControlManager Remove(int uid) {
             if (Contains(uid))
-                // Get(uid).Entity.Delete();
                 elements.Remove(elements.Where(e => e.UniqueId == uid).ToArray()[0]);
             return this;
         }

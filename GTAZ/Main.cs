@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using GTA;
 using GTA.Native;
 using GTAZ.Controllable;
+using GTAZ.Peds;
 using GTAZ.Population;
 using mlgthatsme;
 
@@ -36,7 +37,7 @@ namespace GTAZ
             World.SetRelationshipBetweenGroups(Relationship.Dislike, PlayerGroup, EnemyGroup);
             Player.Character.RelationshipGroup = PlayerGroup;
 
-            _populator = new ControllablePopulator(ControlManager, 20);
+            _populator = new ControllablePopulator(ControlManager, 20, 350f);
 
             Interval = 1;
 
@@ -65,7 +66,9 @@ namespace GTAZ
             Function.Call(Hash.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
 
             ControlManager.Tick();
-            _populator.Tick();
+
+            _populator.PopulatePeds(new ZombiePed(ControlManager.Count), PedHash.Zombie01, Main.Player.Character.Position, 50, 300, new Random(Game.GameTime));
+            _populator.DespawnPeds();
 
         }
     }
