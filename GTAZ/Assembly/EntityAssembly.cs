@@ -64,33 +64,6 @@ namespace GTAZ.Assembly {
         /// </summary>
         protected abstract void InitializeAssembly();
 
-        //
-
-        protected override void OnEntityDead() {}
-
-        protected override void OnEntityAlive() {}
-
-        protected override void OnEntityPlayerNearby() {}
-
-        protected override void OnEntityPedNearby(Ped ped) {}
-
-        protected override void OnEntityPlayerNearbyUpdate(int tick) {}
-
-        protected override void OnEntityInitialize() {}
-
-        protected override void OnEntityAliveUpdate(int tick) {}
-
-        protected override void OnEntityPedNearbyUpdate(Ped ped, int tick) {}
-
-        //
-
-        protected override void OnEntityPlayerKeyDown(KeyEventArgs e) {}
-
-        protected override void OnUpdate(int tick) {}
-
-        protected override void OnActiveUpdate(int activeTick, int tick) {}
-
-        //
 
     }
 

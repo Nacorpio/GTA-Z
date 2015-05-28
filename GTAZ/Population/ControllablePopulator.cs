@@ -15,7 +15,6 @@ namespace GTAZ.Population {
         public PedHash[] ZombieModels = new PedHash[] {
                 PedHash.DeadHooker,
                 PedHash.Corpse01,
-                PedHash.Corpse02,
                 PedHash.Zombie01
         };
 

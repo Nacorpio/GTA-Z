@@ -232,9 +232,13 @@ namespace GTAZ.Controllable {
         /// Remove the wrapped Entity. 
         /// </summary>
         public void RemoveEntity() {
-            if (Entity.CurrentBlip != null)
+
+            if (Entity.CurrentBlip != null) {
                 Entity.CurrentBlip.Remove();
+            }
+
             Main.ControlManager.Remove(this);
+
         }
 
     }

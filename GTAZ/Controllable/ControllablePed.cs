@@ -42,7 +42,7 @@ namespace GTAZ.Controllable {
 
         private readonly PedProperties _props;
 
-        protected ControllablePed(int uid, string group, PedProperties props) : base(uid, group) {
+        protected ControllablePed(int uid, string group, float weightCapacity, PedProperties props) : base(uid, group, weightCapacity) {
             _props = props;
         }
 

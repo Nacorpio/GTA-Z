@@ -7,7 +7,7 @@ namespace GTAZ.Peds {
 
     public class SurvivorPed1 : ControllablePed {
 
-        public SurvivorPed1(int uid) : base(uid, "SURVIVOR_PED", new PedProperties {
+        public SurvivorPed1(int uid) : base(uid, "SURVIVOR_PED", 100f, new PedProperties {
 
             IsFriendly = true,
             SpawnRandomWeapons = false,

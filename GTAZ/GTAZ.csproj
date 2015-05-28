@@ -53,6 +53,10 @@
     <Compile Include="Controllable\ControllableEntity.cs" />
     <Compile Include="Controllable\ControllablePed.cs" />
     <Compile Include="Controllable\ControllableVehicle.cs" />
+    <Compile Include="Inventory.cs" />
+    <Compile Include="Inventory\PedInventory.cs" />
+    <Compile Include="Inventory\PlayerInventory.cs" />
+    <Compile Include="Inventory\VehicleInventory.cs" />
     <Compile Include="Peds\SurvivorPed1.cs" />
     <Compile Include="Peds\TeamPed.cs" />
     <Compile Include="Controllable\ControlManager.cs" />

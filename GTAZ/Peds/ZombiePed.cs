@@ -7,7 +7,7 @@ namespace GTAZ.Peds {
 
     public class ZombiePed : ControllablePed {
 
-        public ZombiePed(int uid) : base(uid, "ZOMBIE_PED",
+        public ZombiePed(int uid) : base(uid, "ZOMBIE_PED", 100f,
         new PedProperties {
 
             IsFriendly = false,
@@ -52,8 +52,6 @@ namespace GTAZ.Peds {
         }
 
         protected override void OnEntityInitialize() {
-
-            Function.Call(Hash.APPLY_PED_BLOOD);
 
             Ped.AlwaysKeepTask = true;
             Ped.Task.GuardCurrentPosition();

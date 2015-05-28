@@ -7,7 +7,7 @@ namespace GTAZ.Peds {
 
     public class TeamPed : ControllablePed {
 
-        public TeamPed(int uid) : base(uid, "TEAM_PED", new PedProperties {
+        public TeamPed(int uid) : base(uid, "TEAM_PED", 100f, new PedProperties {
 
             IsFriendly = false,
 
