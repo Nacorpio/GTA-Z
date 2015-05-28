@@ -11,6 +11,7 @@ namespace GTAZ.Peds {
         new PedProperties {
 
             IsFriendly = false,
+            IsZombie = true,
 
             SpawnRandomWeapons = true,
             RandomWeapons = new [] {WeaponHash.Unarmed, WeaponHash.Knife, WeaponHash.Dagger, WeaponHash.Crowbar, WeaponHash.Bat, WeaponHash.Hammer, WeaponHash.Hatchet, WeaponHash.GolfClub},
@@ -51,6 +52,8 @@ namespace GTAZ.Peds {
         }
 
         protected override void OnEntityInitialize() {
+
+            Function.Call(Hash.APPLY_PED_BLOOD);
 
             Ped.AlwaysKeepTask = true;
             Ped.Task.GuardCurrentPosition();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using GTA;
 using GTA.Native;
@@ -17,6 +18,7 @@ namespace GTAZ
 
         public static int PlayerGroup;
         public static int EnemyGroup;
+        public static int ZombieGroup;
 
         public readonly static ControlManager ControlManager = new ControlManager();
         private static ControllablePopulator _populator;
@@ -34,8 +36,12 @@ namespace GTAZ
 
             PlayerGroup = World.AddRelationShipGroup("PLAYER");
             EnemyGroup = World.AddRelationShipGroup("ENEMY");
+            ZombieGroup = World.AddRelationShipGroup("ZOMBIE");
 
             World.SetRelationshipBetweenGroups(Relationship.Dislike, PlayerGroup, EnemyGroup);
+            World.SetRelationshipBetweenGroups(Relationship.Dislike, ZombieGroup, EnemyGroup);
+            World.SetRelationshipBetweenGroups(Relationship.Dislike, PlayerGroup, ZombieGroup);
+
             Player.Character.RelationshipGroup = PlayerGroup;
 
             _populator = new ControllablePopulator(ControlManager, 8, 3, 200f, 350f);
@@ -71,7 +77,8 @@ namespace GTAZ
 
             ControlManager.Tick();
 
-            _populator.PopulateWithPed(new ZombiePed(ControlManager.LivingPeds.ToList().Count), PedHash.Zombie01, Player.Character.Position, 25, 150, new Random(Game.GameTime));
+            // _populator.PopulateWithPed(new ZombiePed(ControlManager.LivingPeds.ToList().Count), PedHash.Zombie01, Player.Character.Position, 25, 150, new Random(Game.GameTime));
+            _populator.PopulateWithRandomZombie(new ZombiePed(ControlManager.LivingPeds.ToList().Count), Player.Character.Position, 25, 150, new Random(Game.GameTime));
             _populator.DespawnPeds();
 
             _populator.PopulateWithAbandonedVehicle(Player.Character.Position, 50, 300, new Random(Game.GameTime));

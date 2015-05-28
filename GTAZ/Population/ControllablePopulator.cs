@@ -5,11 +5,19 @@ using GTA;
 using GTA.Math;
 using GTA.Native;
 using GTAZ.Controllable;
+using GTAZ.Peds;
 using GTAZ.Vehicles;
 
 namespace GTAZ.Population {
 
     public class ControllablePopulator {
+
+        public PedHash[] ZombieModels = new PedHash[] {
+                PedHash.DeadHooker,
+                PedHash.Corpse01,
+                PedHash.Corpse02,
+                PedHash.Zombie01
+        };
 
         private readonly ControlManager _manager;
 
@@ -92,13 +100,17 @@ namespace GTAZ.Population {
             var varPosition1 = position.Around(varRandom1);
 
             var veh = _manager.CreateVehicle(vehicle, model, varPosition1, rand.Next(0, 360));
-            if (veh == null) {
-                UI.Notify("A vehicle is null! (" + _manager.LivingEntities.ToList().Count + ")");
-                return;
-            }
-
             veh.PlaceOnNextStreet();
 
+        }
+
+        public void PopulateWithZombie(int index, ZombiePed zped, Vector3 position, int min, int max, Random rand) {
+            var model = ZombieModels[index];
+            PopulateWithPed(zped, model, position, min, max, rand);
+        }
+
+        public void PopulateWithRandomZombie(ZombiePed zped, Vector3 position, int min, int max, Random rand) {
+            PopulateWithZombie(rand.Next(0, ZombieModels.Length - 1), zped, position, min, max, rand);
         }
 
         public void PopulateWithPed(ControllablePed ped, PedHash model, Vector3 position, int min, int max, Random rand) {

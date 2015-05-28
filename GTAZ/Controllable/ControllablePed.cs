@@ -9,7 +9,7 @@ namespace GTAZ.Controllable {
 
     public abstract class ControllablePed : ControllableEntity {
 
-        public struct PedProperties {
+        protected struct PedProperties {
 
             public bool Teleport;
             public int X, Y, Z;
@@ -30,6 +30,7 @@ namespace GTAZ.Controllable {
             public int Armor;
 
             public bool IsFriendly;
+            public bool IsZombie;
 
             public bool RecordKeys;
 
@@ -78,7 +79,7 @@ namespace GTAZ.Controllable {
 
             }
 
-            ped.RelationshipGroup = (_props.IsFriendly ? Main.PlayerGroup : Main.EnemyGroup);
+            ped.RelationshipGroup = (_props.IsFriendly ? Main.PlayerGroup : (_props.IsZombie ? Main.ZombieGroup : Main.EnemyGroup));
 
             var randomWeapon = WeaponHash.Unarmed;
             if (_props.Teleport) {
