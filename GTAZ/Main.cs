@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using GTA;
 using GTA.Native;
 using GTAZ.Controllable;
+using GTAZ.Population;
 using mlgthatsme;
 
 namespace GTAZ
@@ -16,6 +17,7 @@ namespace GTAZ
         public static int EnemyGroup;
 
         public readonly static ControlManager ControlManager = new ControlManager();
+        private static ControllablePopulator _populator;
 
         public static Viewport Viewport;
         public static Player Player;
@@ -34,6 +36,8 @@ namespace GTAZ
             World.SetRelationshipBetweenGroups(Relationship.Dislike, PlayerGroup, EnemyGroup);
             Player.Character.RelationshipGroup = PlayerGroup;
 
+            _populator = new ControllablePopulator(ControlManager, 20);
+
             Interval = 1;
 
         }
@@ -46,17 +50,6 @@ namespace GTAZ
 
                 case Keys.F5:
 
-                    ControlManager.CreatePed(new TeamPed(3333 + ControlManager.Count), PedHash.Swat01SMY, Player.Character.Position);
-                    break;
-
-                case Keys.F7:
-
-                    for (var i = 0; i < 20; i++) {
-                        var rand = new Random(Game.GameTime + (i * 10));
-                        ControlManager.CreatePed(new ZombiePed(ControlManager.Count), PedHash.Zombie01, Player.Character.Position.Around(rand.Next(0, 500)));
-                    }
-
-                    UI.Notify("Zombies has been generated!");
                     break;
 
             }
@@ -72,6 +65,7 @@ namespace GTAZ
             Function.Call(Hash.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
 
             ControlManager.Tick();
+            _populator.Tick();
 
         }
     }

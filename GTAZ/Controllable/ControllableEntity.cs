@@ -62,6 +62,7 @@ namespace GTAZ.Controllable {
         protected override void OnActiveUpdate(int activeTick, int tick) {
 
             if (_entity == null) {
+                Entity.Delete();
                 return;
             }
 
@@ -153,7 +154,7 @@ namespace GTAZ.Controllable {
 
         protected abstract void OnEntityDead();
 
-        private void RemoveEntity() {
+        public void RemoveEntity() {
             if (Entity.CurrentBlip != null)
                 Entity.CurrentBlip.Remove();
             Main.ControlManager.Remove(this);

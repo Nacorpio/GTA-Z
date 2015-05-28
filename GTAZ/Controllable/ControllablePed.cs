@@ -65,6 +65,8 @@ namespace GTAZ.Controllable {
 
             var ped = (Ped) Entity;
 
+            ped.IsPersistent = true;
+
             if (_props.IsFriendly) {
 
                 var playerGroup = Function.Call<int>(Hash.GET_PLAYER_GROUP, Main.Player);

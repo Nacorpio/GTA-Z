@@ -56,15 +56,15 @@ namespace GTAZ.Controllable {
         }
 
         public bool Contains(Entity entity) {
-            return elements.Where(e => e.Entity == entity).ToArray().Length == 1;
+            return elements.Any(e => e.Entity == entity);
         }
 
         public bool Contains(string groupId) {
-            return elements.Where(e => e.GroupId == groupId).ToArray().Length >= 1;
+            return elements.Any(e => e.GroupId == groupId);
         }
 
         public bool Contains(int uid) {
-            return elements.Where(e => e.UniqueId == uid).ToArray().Length == 1;
+            return elements.Any(e => e.UniqueId == uid);
         }
 
         public IEnumerable<ControllableEntity> Get(string groupId) {
@@ -112,6 +112,14 @@ namespace GTAZ.Controllable {
         public ControlManager Remove(ControllableEntity entity) {
             if (Contains(entity))
                 elements.Remove(entity);
+                // entity.Entity.Delete();
+            return this;
+        }
+
+        public ControlManager Remove(int uid) {
+            if (Contains(uid))
+                // Get(uid).Entity.Delete();
+                elements.Remove(elements.Where(e => e.UniqueId == uid).ToArray()[0]);
             return this;
         }
 
@@ -136,7 +144,7 @@ namespace GTAZ.Controllable {
         } 
 
         public int Count {
-            get { return elements.Count; }
+            get { return Entities.Count; }
         }
         
         public void Tick() {
