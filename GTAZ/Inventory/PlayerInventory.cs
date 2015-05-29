@@ -1,10 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GTA;
 
 namespace GTAZ.Inventory {
-    class PlayerInventory {
+
+    public class PlayerInventory : Inventory {
+
+        public PlayerInventory(int capacity = 16) : base("PlayerInventory", capacity) {}
+
+        public override void OnInventoryOpen() {
+            throw new System.NotImplementedException();
+        }
+
+        public override void OnInventoryClose() {
+            throw new System.NotImplementedException();
+        }
+
+        public override void OnItemUse(Ped ped, int index) {
+            UseItem(index, ped);
+        }
+
+        public override void OnItemUse(Player player, int index) {
+            OnItemUse(player.Character, index);
+        }
+
     }
+
 }

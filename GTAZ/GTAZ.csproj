@@ -54,6 +54,8 @@
     <Compile Include="Controllable\ControllablePed.cs" />
     <Compile Include="Controllable\ControllableVehicle.cs" />
     <Compile Include="Inventory.cs" />
+    <Compile Include="Inventory\Item.cs" />
+    <Compile Include="Inventory\ItemStack.cs" />
     <Compile Include="Inventory\PedInventory.cs" />
     <Compile Include="Inventory\PlayerInventory.cs" />
     <Compile Include="Inventory\VehicleInventory.cs" />

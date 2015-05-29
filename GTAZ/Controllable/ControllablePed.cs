@@ -5,6 +5,7 @@ using GTA;
 using GTA.Math;
 using GTA.Native;
 using GTAZ.Assembly;
+using GTAZ.Inventory;
 
 namespace GTAZ.Controllable {
 
@@ -128,7 +129,9 @@ namespace GTAZ.Controllable {
         //
 
         protected override void InitializeAssembly() {
+
             // Initialize the Parts every wrapped ped should have in its Assembly.
+            AddPart("Inventory", new PlayerInventory());
 
         }
 

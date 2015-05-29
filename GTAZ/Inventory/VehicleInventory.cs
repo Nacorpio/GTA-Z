@@ -1,10 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GTA;
 
 namespace GTAZ.Inventory {
-    class VehicleInventory {
+
+    public class VehicleInventory : Inventory {
+
+        public VehicleInventory(int capacity = 32) : base("VehicleInventory", capacity) {}
+
+        public override void OnItemUse(Player player, int index) {}
+
+        public override void OnItemUse(Ped ped, int index) {}
+
     }
+
 }
