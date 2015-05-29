@@ -32,7 +32,7 @@ namespace GTAZ.Inventory {
         public void ShowInventory() {
 
             // TODO: Show the inventory as a menu.
-            OnInventoryOpen();
+            OnInventoryShow();
 
         }
 
@@ -48,7 +48,7 @@ namespace GTAZ.Inventory {
 
         //
 
-        public abstract void OnInventoryOpen();
+        public abstract void OnInventoryShow();
 
         public abstract void OnInventoryClose();
 

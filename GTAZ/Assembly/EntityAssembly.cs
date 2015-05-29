@@ -19,7 +19,6 @@ namespace GTAZ.Assembly {
 
         /// <summary>
         /// Adds a Part to this Assembly with the specified name.
-        /// </summary>
         /// <param name="name">The name of the part to add.</param>
         /// <param name="part">The part to add.</param>
         public void AddPart(string name, EntityPart part) {
@@ -56,8 +55,8 @@ namespace GTAZ.Assembly {
         public float GetWeightCapacity() {
             return _weightCapacity;
         }
+        
 
-        //
 
         /// <summary>
         /// Initializes this Assembly.

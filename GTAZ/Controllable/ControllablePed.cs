@@ -78,8 +78,9 @@ namespace GTAZ.Controllable {
             }
 
             var ped = (Ped) Entity;
-
             ped.IsPersistent = true;
+
+            PlaceOnNextStreet();
 
             if (_props.IsFriendly) {
 

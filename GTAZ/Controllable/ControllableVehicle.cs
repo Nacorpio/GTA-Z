@@ -2,6 +2,7 @@
 using GTA;
 using GTA.Math;
 using GTAZ.Assembly;
+using GTAZ.Inventory;
 
 namespace GTAZ.Controllable {
 
@@ -51,8 +52,7 @@ namespace GTAZ.Controllable {
         protected override void InitializeAssembly() {
 
             // Initialize the Parts every wrapped vehicle should have in its Assembly.
-            AddPart("Battery", null);
-            AddPart("Inventory", null);
+            AddPart("Inventory", new VehicleInventory());
 
         }
 
@@ -63,6 +63,7 @@ namespace GTAZ.Controllable {
             }
 
             var vehicle = (Vehicle) Entity;
+            InitializeAssembly();
 
             if (_vehicleProperties.Teleport) {
                 vehicle.Position = new Vector3(_vehicleProperties.X, _vehicleProperties.Y, _vehicleProperties.Z);

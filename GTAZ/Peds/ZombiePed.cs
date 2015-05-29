@@ -19,10 +19,10 @@ namespace GTAZ.Peds {
             Weapons = null,
             PreferredWeapon = WeaponHash.Unarmed,
 
-            Armor = 50,
+            Armor = 0,
             Accuracy = 5,
-            MaxHealth = 75,
-            Health = 75,
+            MaxHealth = 74,
+            Health = 74,
 
             AttachBlip = true,
             BlipColor = BlipColor.Red,

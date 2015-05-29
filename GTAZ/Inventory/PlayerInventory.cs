@@ -6,7 +6,7 @@ namespace GTAZ.Inventory {
 
         public PlayerInventory(int capacity = 16) : base("PlayerInventory", null, capacity) {}
 
-        public override void OnInventoryOpen() {}
+        public override void OnInventoryShow() {}
 
         public override void OnInventoryClose() {}
 

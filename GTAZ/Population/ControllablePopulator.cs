@@ -41,7 +41,7 @@ namespace GTAZ.Population {
                     return;
                 } 
 
-                float despawnRange;
+                var despawnRange = 0f;
 
                 if (e.Entity is Ped) {
                     despawnRange = _pedDespawnRange;

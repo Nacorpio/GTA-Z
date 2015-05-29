@@ -1,5 +1,7 @@
 ﻿using System.Windows.Forms;
 using GTA;
+using GTA.Math;
+using GTA.Native;
 using GTAV_purge_mod;
 
 namespace GTAZ.Controllable {
@@ -42,6 +44,30 @@ namespace GTAZ.Controllable {
                 _interactionDistance = distance;
         }
 
+        /// <summary>
+        /// Places this ControllableEntity on the closest StreetNode.
+        /// </summary>
+        public void PlaceOnNextStreet() {
+
+            var pos = Entity.Position;
+            var outPos = new OutputArgument();
+
+            for (var i = 0; i < 40; i++) {
+
+                Function.Call(Hash.GET_NTH_CLOSEST_VEHICLE_NODE, pos.X, pos.Y, pos.Z, i, outPos, 1, 0x40400000, 0);
+                var newPos = outPos.GetResult<Vector3>();
+
+                if (Function.Call<bool>(Hash.IS_POINT_OBSCURED_BY_A_MISSION_ENTITY, newPos.X, newPos.Y, newPos.Z, 5.0f, 5.0f, 5.0f, 0)) {
+                    return;
+                }
+
+                Entity.Position = newPos;
+                break;
+
+            }
+
+        }
+
         //
 
         /// <summary>
@@ -72,7 +98,7 @@ namespace GTAZ.Controllable {
             if (e == null)
                 return null;
 
-            if (IsActive && Entity.IsInRangeOf(Main.Player.Character.Position, _interactionDistance))
+            if (IsActive && Entity.IsInRangeOf(Main.Player.Character.Position, _interactionDistance) && !Main.Player.Character.IsInVehicle())
                 OnEntityPlayerKeyDown(e);
             
             return this;

@@ -10,9 +10,13 @@ namespace GTAZ.Inventory {
 
         public override void OnItemUse(Ped ped, int index) {}
 
-        public override void OnInventoryClose() {}
+        public override void OnInventoryClose() {
+            UI.Notify("The vehicle inventory was closed!");
+        }
 
-        public override void OnInventoryOpen() {}
+        public override void OnInventoryShow() {
+            UI.Notify("The vehicle inventory was shown!");
+        }
 
     }
 

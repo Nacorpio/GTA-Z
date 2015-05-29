@@ -12,7 +12,7 @@ namespace GTAZ.Inventory {
             
         }
 
-        public override void OnInventoryOpen() {}
+        public override void OnInventoryShow() {}
 
         public override void OnInventoryClose() {}
 
