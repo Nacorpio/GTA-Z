@@ -1,10 +1,11 @@
 ﻿using System.Windows.Forms;
 using GTA;
 using GTA.Math;
+using GTAZ.Assembly;
 
 namespace GTAZ.Controllable {
 
-    public abstract class ControllableVehicle : ControllableEntity {
+    public abstract class ControllableVehicle : EntityAssembly {
 
         public struct VehicleProperties {
 
@@ -37,12 +38,22 @@ namespace GTAZ.Controllable {
 
         private readonly VehicleProperties _vehicleProperties;
 
-        protected ControllableVehicle(int uid, string groupId, VehicleProperties vehicleProperties) : base(uid, groupId) {
+        protected ControllableVehicle(int uid, string groupId, VehicleProperties vehicleProperties) : base(uid, groupId, 100f) {
             _vehicleProperties = vehicleProperties;
         }
 
         public Vehicle Vehicle {
             get { return (Vehicle) Entity; }
+        }
+
+        //
+
+        protected override void InitializeAssembly() {
+
+            // Initialize the Parts every wrapped vehicle should have in its Assembly.
+            AddPart("Battery", null);
+            AddPart("Inventory", null);
+
         }
 
         protected override void ApplyChanges() {
@@ -89,8 +100,6 @@ namespace GTAZ.Controllable {
             if (_vehicleProperties.AttachBlip) {
                 vehicle.AddBlip().Color = _vehicleProperties.BlipColor;
             }
-
-            Main.Log("It works!");
 
         }
 

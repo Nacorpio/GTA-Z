@@ -12,9 +12,7 @@ namespace GTAZ.Population {
 
     public class ControllablePopulator {
 
-        public PedHash[] ZombieModels = new PedHash[] {
-                PedHash.DeadHooker,
-                PedHash.Corpse01,
+        public readonly PedHash[] ZombieModels = new [] {
                 PedHash.Zombie01
         };
 
@@ -34,9 +32,41 @@ namespace GTAZ.Population {
             _vehicleDespawnRange = vehicleDespawnRange;
         }
 
+        public void DespawnOutOfRange() {
+            
+            _manager.LivingEntities.ToList().ForEach(e => {
+
+                if (e.Keep) {
+                    // The entity is going to be kept.
+                    return;
+                } 
+
+                float despawnRange;
+
+                if (e.Entity is Ped) {
+                    despawnRange = _pedDespawnRange;
+                } else if (e.Entity is Vehicle) {
+                    despawnRange = _vehicleDespawnRange;
+                }
+
+                if (!(e.Entity.Position.DistanceTo(Main.Player.Character.Position) >= despawnRange)) {
+                    return;
+                }
+
+                _manager.Remove(e);
+                e.RemoveEntity();
+
+            });
+
+        }
+
         public void DespawnPeds() {
 
             _manager.LivingPeds.ToList().ForEach(e => {
+
+                if (e.Keep) {
+                    return;
+                }
 
                 if (!(e.Entity.Position.DistanceTo(Main.Player.Character.Position) >= _pedDespawnRange)) {
                     return;
@@ -52,6 +82,10 @@ namespace GTAZ.Population {
         public void DespawnVehicles() {
 
             _manager.LivingVehicles.ToList().ForEach(e => {
+
+                if (e.Keep) {
+                    return;
+                }
 
                 if (!(e.Entity.Position.DistanceTo(Main.Player.Character.Position) >= _vehicleDespawnRange)) {
                     return;

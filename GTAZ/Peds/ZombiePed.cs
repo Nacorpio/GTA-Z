@@ -48,13 +48,12 @@ namespace GTAZ.Peds {
 
         protected override void OnPlayerMenuOpen() {}
 
-        protected override void OnPlayerKeyDown(KeyEventArgs e) {
-        }
+        protected override void OnPlayerKeyDown(KeyEventArgs e) {}
 
         protected override void OnEntityInitialize() {
 
             Ped.AlwaysKeepTask = true;
-            Ped.Task.GuardCurrentPosition();
+            Function.Call(Hash.TASK_COMBAT_PED, Ped, Main.Player.Character, 0, 16);
 
         }
 

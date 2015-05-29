@@ -62,6 +62,9 @@
     <Compile Include="Peds\SurvivorPed1.cs" />
     <Compile Include="Peds\TeamPed.cs" />
     <Compile Include="Controllable\ControlManager.cs" />
+    <Compile Include="Shopping\Store.cs" />
+    <Compile Include="Shopping\StoreItem.cs" />
+    <Compile Include="Shopping\StoreItemStack.cs" />
     <Compile Include="Vehicles\TeamVehicle.cs" />
     <Compile Include="Peds\ZombiePed.cs" />
     <Compile Include="Main.cs" />

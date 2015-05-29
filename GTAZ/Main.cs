@@ -34,6 +34,17 @@ namespace GTAZ
             Viewport = View;
             Player = Game.Player;
 
+            UpdateRelationships();
+            _populator = new ControllablePopulator(ControlManager, 8, 3, 200f, 350f);
+
+            Interval = 1;
+
+        }
+
+        private static void UpdateRelationships() {
+
+            Player.Character.RelationshipGroup = PlayerGroup;
+
             PlayerGroup = World.AddRelationShipGroup("PLAYER");
             EnemyGroup = World.AddRelationShipGroup("ENEMY");
             ZombieGroup = World.AddRelationShipGroup("ZOMBIE");
@@ -42,11 +53,24 @@ namespace GTAZ
             World.SetRelationshipBetweenGroups(Relationship.Dislike, ZombieGroup, EnemyGroup);
             World.SetRelationshipBetweenGroups(Relationship.Dislike, PlayerGroup, ZombieGroup);
 
-            Player.Character.RelationshipGroup = PlayerGroup;
+        }
 
-            _populator = new ControllablePopulator(ControlManager, 8, 3, 200f, 350f);
+        private static void UpdateMultipliers() {
+            Function.Call(Hash.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+            Function.Call(Hash.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+            Function.Call(Hash.SET_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+            Function.Call(Hash.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+            Function.Call(Hash.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+        }
 
-            Interval = 1;
+        private static void PopulateWorld() {
+
+            // _populator.PopulateWithPed(new ZombiePed(ControlManager.LivingPeds.ToList().Count), PedHash.Zombie01, Player.Character.Position, 25, 150, new Random(Game.GameTime));
+            _populator.PopulateWithRandomZombie(new ZombiePed(ControlManager.LivingPeds.ToList().Count), Player.Character.Position, 25, 150, new Random(Game.GameTime));
+            _populator.PopulateWithAbandonedVehicle(Player.Character.Position, 50, 300, new Random(Game.GameTime));
+
+            // Despawns all the entities that are out of its range.
+            _populator.DespawnOutOfRange();
 
         }
 
@@ -55,35 +79,13 @@ namespace GTAZ
         }
 
         private static void OnKeyDown(object sender, KeyEventArgs keyEventArgs) {
-
             ControlManager.KeyDown(keyEventArgs);
-
-            switch (keyEventArgs.KeyCode) {
-
-                case Keys.F5:
-                    break;
-
-            }
-
         }
 
         private static void OnTick(object sender, EventArgs eventArgs) {
-
-            Function.Call(Hash.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
-            Function.Call(Hash.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
-            Function.Call(Hash.SET_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
-            Function.Call(Hash.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
-            Function.Call(Hash.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
-
+            UpdateMultipliers();
             ControlManager.Tick();
-
-            // _populator.PopulateWithPed(new ZombiePed(ControlManager.LivingPeds.ToList().Count), PedHash.Zombie01, Player.Character.Position, 25, 150, new Random(Game.GameTime));
-            _populator.PopulateWithRandomZombie(new ZombiePed(ControlManager.LivingPeds.ToList().Count), Player.Character.Position, 25, 150, new Random(Game.GameTime));
-            _populator.DespawnPeds();
-
-            _populator.PopulateWithAbandonedVehicle(Player.Character.Position, 50, 300, new Random(Game.GameTime));
-            _populator.DespawnVehicles();
-
+            PopulateWorld();
         }
     }
 

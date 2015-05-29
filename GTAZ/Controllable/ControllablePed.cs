@@ -19,6 +19,9 @@ namespace GTAZ.Controllable {
             public bool AttachBlip;
             public BlipColor BlipColor;
 
+            public bool UseBlipSprite;
+            public BlipSprite BlipSprite;
+
             public int Health;
             public int MaxHealth;
 
@@ -52,12 +55,18 @@ namespace GTAZ.Controllable {
         }
 
         private void AttachBlip(Entity ped) {
+
             if (_props.AttachBlip) {
 
-                ped.AddBlip()
-                    .Color = _props.BlipColor;
+                var blip = ped.AddBlip();
+                blip.Color = _props.BlipColor;
+
+                if (_props.UseBlipSprite) {
+                    blip.Sprite = _props.BlipSprite;
+                }
 
             }
+
         }
 
         //
@@ -122,9 +131,7 @@ namespace GTAZ.Controllable {
 
         }
 
-        protected override void OnEntityPedNearbyUpdate(Ped ped, int tick) {
-            
-        }
+        protected override void OnEntityPedNearbyUpdate(Ped ped, int tick) {}
 
         //
 
@@ -155,9 +162,7 @@ namespace GTAZ.Controllable {
 
         //
 
-        protected override void OnEntityAliveUpdate(int tick) {
-            
-        }
+        protected override void OnEntityAliveUpdate(int tick) {}
 
         protected abstract override void OnEntityInitialize();
 

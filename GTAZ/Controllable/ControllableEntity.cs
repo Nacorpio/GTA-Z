@@ -16,6 +16,8 @@ namespace GTAZ.Controllable {
 
         //
 
+        public bool Keep { get; set; }
+
         /// <summary>
         /// Returns the unique group identifier of this ControllableEntity.
         /// </summary>
@@ -149,6 +151,8 @@ namespace GTAZ.Controllable {
 
                 }
 
+                OnEntityInitialize();
+
             } else if (_entity.IsDead) {
 
                 _aliveTicks = 0;
@@ -156,11 +160,7 @@ namespace GTAZ.Controllable {
                 OnEntityDead();
                 RemoveEntity();
 
-                return;
-
             }
-
-            OnEntityInitialize();
 
         }
 

@@ -15,14 +15,20 @@ namespace GTAZ.Inventory {
         private readonly int _capacity;
         private readonly List<ItemStack> _items;
 
-        protected Inventory(string name, int capacity = 16) : base(name) {
+        private object _menu;
+
+        protected Inventory(string name, object menu, int capacity = 16) : base(name) {
             _name = name;
             _items = new List<ItemStack>(capacity);
             _capacity = capacity;
+            _menu = menu;
         }
 
         //
 
+        /// <summary>
+        /// Shows the menu of this inventory.
+        /// </summary>
         public void ShowInventory() {
 
             // TODO: Show the inventory as a menu.
@@ -30,6 +36,9 @@ namespace GTAZ.Inventory {
 
         }
 
+        /// <summary>
+        /// Closes the menu of this inventory.
+        /// </summary>
         public void CloseInventory() {
 
             // TODO: Close the inventory.
