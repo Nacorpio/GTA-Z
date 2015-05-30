@@ -23,6 +23,30 @@ namespace GTAZ.Controllable {
         }
 
         /// <summary>
+        /// Creates a prop with the specified wrapper, model, position and rotation.
+        /// </summary>
+        /// <param name="cprop">The wrapper to wrap around the newly spawned Prop.</param>
+        /// <param name="model">The model of the newly spawned Prop.</param>
+        /// <param name="position">The position of where to spawn the Prop.</param>
+        /// <param name="rotation">The rotation of the newly spawned Prop.</param>
+        /// <param name="dynamic">Whether the Prop should be dynamic (true) or static (false).</param>
+        /// <param name="ground">Whether to place the newly spawned Prop on the ground properly.</param>
+        /// <returns></returns>
+        public Prop CreateProp(ControllableProp cprop, Model model, Vector3 position, Vector3 rotation, bool dynamic, bool ground) {
+
+            var var1 = World.CreateProp(model, position, rotation, dynamic, true);
+            var var2 = cprop.Control(var1);
+
+            if (var2 == null) {
+                return null;
+            }
+
+            Add(var2);
+            return var1;
+
+        }
+
+        /// <summary>
         /// Creates a ped with the specified wrapper, model and at the specified position.
         /// </summary>
         /// <param name="cped">The wrapper to wrap around the newly spawned Ped.</param>

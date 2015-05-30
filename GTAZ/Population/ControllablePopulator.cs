@@ -25,6 +25,7 @@ namespace GTAZ.Population {
 
         private readonly float _pedDespawnRange;
         private readonly float _vehicleDespawnRange;
+        private readonly float _propDespawnRange;
 
         public ControllablePopulator(ControlManager manager, int pedCapacity, int vehicleCapacity, float pedDespawnRange, float vehicleDespawnRange) {
             _manager = manager;
@@ -49,6 +50,8 @@ namespace GTAZ.Population {
                     despawnRange = _pedDespawnRange;
                 } else if (e.Entity is Vehicle) {
                     despawnRange = _vehicleDespawnRange;
+                } else if (e.Entity is Prop) {
+                    despawnRange = _propDespawnRange;
                 }
 
                 if (!(e.Entity.Position.DistanceTo(Main.Player.Character.Position) >= despawnRange)) {

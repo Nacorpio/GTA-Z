@@ -1,16 +1,8 @@
-﻿using System;
-using GTA;
-using GTA.Math;
+﻿using GTA;
 
 namespace GTAZ.Inventory {
 
-    public delegate void ItemDropEventHandler(Ped oldHolder, Vector3 pos, object sender, EventArgs e);
-    public delegate void ItemPickupEventHandler(Ped newOwner, Vector3 pos, object sender, EventArgs e);
-
     public class ItemStack {
-
-        protected event ItemDropEventHandler Dropped;
-        protected event ItemPickupEventHandler Pickup;
 
         private readonly Item _item;
         private int _size;

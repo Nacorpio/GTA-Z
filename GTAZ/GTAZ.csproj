@@ -50,6 +50,7 @@
     <Compile Include="Assembly\EntityPart.cs" />
     <Compile Include="Controllable\ControllableEntity.cs" />
     <Compile Include="Controllable\ControllablePed.cs" />
+    <Compile Include="Controllable\ControllableProp.cs" />
     <Compile Include="Controllable\ControllableVehicle.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="Inventory\Item.cs" />

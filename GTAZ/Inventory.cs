@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GTA;
+using GTA.Math;
 using GTAZ.Assembly;
 
 namespace GTAZ.Inventory {
@@ -10,10 +11,16 @@ namespace GTAZ.Inventory {
     public delegate void InventoryItemUseEventHandler(int index, Player trigger, Ped target, object sender, EventArgs e);
     public delegate void InventoryItemAddedEventHandler(ItemStack add, object sender, EventArgs e);
 
+    public delegate void ItemDropEventHandler(Ped oldHolder, Vector3 pos, object sender, EventArgs e);
+    public delegate void ItemPickupEventHandler(Ped newOwner, Vector3 pos, object sender, EventArgs e);
+
     /// <summary>
     /// Represents an inventory, storing ItemStacks.
     /// </summary>
     public abstract class Inventory : EntityPart {
+
+        protected event ItemDropEventHandler Dropped;
+        protected event ItemPickupEventHandler Pickup;
 
         protected event InventoryChangedEventHandler Shown, Closed;
 
@@ -35,6 +42,18 @@ namespace GTAZ.Inventory {
         }
 
         //
+
+        protected void UseItem(int index, Player trigger, Ped target) {
+            _items[index].UseItem(trigger, target);
+            if (ItemUsed != null)
+                ItemUsed(index, trigger, target, this, EventArgs.Empty);
+        }
+
+        public void DropItem(int index) {
+            
+
+
+        }
 
         /// <summary>
         /// Shows the menu of this inventory.
@@ -59,10 +78,7 @@ namespace GTAZ.Inventory {
 
         //
 
-        protected void UseItem(int index, Player trigger, Ped target) {
-            _items[index].UseItem(trigger, target);
-            if (ItemUsed != null) ItemUsed(index, trigger, target, this, EventArgs.Empty);
-        }
+        
 
         public void AddItem(ItemStack item) {
             if (_items.Count + 1 <= _capacity) {
@@ -96,6 +112,8 @@ namespace GTAZ.Inventory {
         public void RemoveItem(int index) {
             _items.RemoveAt(index);
         }
+
+        //
 
         public string Name {
             get { return _name; }
