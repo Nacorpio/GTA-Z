@@ -9,7 +9,11 @@ using GTAZ.Inventory;
 
 namespace GTAZ.Controllable {
 
+    public delegate void MenuOpenEventHandler(object sender, EventArgs e);
+
     public abstract class ControllablePed : EntityAssembly {
+
+        protected event MenuOpenEventHandler MenuOpen;
 
         protected struct PedProperties {
 
@@ -43,14 +47,29 @@ namespace GTAZ.Controllable {
             public Keys MenuKey;
 
         }
-
         private readonly PedProperties _props;
 
         protected ControllablePed(int uid, string group, float weightCapacity, PedProperties props) : base(uid, group, weightCapacity) {
+
             _props = props;
+            PlayerKeyDown += OnPlayerKeyDown;
+
         }
 
-        public Ped Ped {
+        private void OnPlayerKeyDown(object sender, KeyEventArgs e) {
+
+            if (e == null || !_props.RecordKeys) {
+                return;
+            }
+
+            if (_props.HasMenu && e.KeyCode == _props.MenuKey) {
+                if (MenuOpen != null)
+                    MenuOpen(this, EventArgs.Empty);
+            }
+
+        }
+
+        protected Ped Ped {
             get { return (Ped) Entity; }
         }
 
@@ -68,8 +87,6 @@ namespace GTAZ.Controllable {
             }
 
         }
-
-        //
 
         protected override void ApplyChanges() {
 
@@ -132,40 +149,12 @@ namespace GTAZ.Controllable {
 
         }
 
-        protected override void OnEntityPedNearbyUpdate(Ped ped, int tick) {}
-
-        //
-
         protected override void InitializeAssembly() {
 
             // Initialize the Parts every wrapped ped should have in its Assembly.
             AddPart("Inventory", new PlayerInventory());
 
         }
-
-        protected sealed override void OnEntityPlayerKeyDown(KeyEventArgs e) {
-
-            if (e == null || !_props.RecordKeys) {
-                return;
-            }
-
-            if (_props.HasMenu && e.KeyCode == _props.MenuKey) {
-                OnPlayerMenuOpen();
-            }
-
-            OnPlayerKeyDown(e);
-
-        }
-
-        protected abstract void OnPlayerMenuOpen();
-
-        protected abstract void OnPlayerKeyDown(KeyEventArgs e);
-
-        //
-
-        protected override void OnEntityAliveUpdate(int tick) {}
-
-        protected abstract override void OnEntityInitialize();
 
     }
 

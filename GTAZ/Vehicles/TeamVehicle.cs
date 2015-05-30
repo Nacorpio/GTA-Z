@@ -7,7 +7,7 @@ namespace GTAZ.Vehicles {
     public class TeamVehicle : ControllableVehicle {
 
         public TeamVehicle(int uid) : base(uid, "TEAM_VEHICLE", new VehicleProperties {
-            
+
             Teleport = false,
             AttachBlip = true,
 
@@ -17,35 +17,43 @@ namespace GTAZ.Vehicles {
             PrimaryColor = VehicleColor.MetallicBlack,
             SecondaryColor = VehicleColor.MetallicBlack,
 
-            NumberPlateText = "", WindowTint = VehicleWindowTint.PureBlack, IsEngineRunning = true,
-            SmashWindows = false, EngineHealth = 100, BurstTires = false
-                        
+            NumberPlateText = "",
+            WindowTint = VehicleWindowTint.PureBlack,
+            IsEngineRunning = true,
+            SmashWindows = false,
+            EngineHealth = 100,
+            BurstTires = false
+
 
         }) {}
 
-        protected override void OnEntityDead() {
-        }
+        #region
 
-        protected override void OnPlayerKeyDown(KeyEventArgs e) {
-        }
+        //protected override void OnEntityDead() {
+        //}
 
-        protected override void OnEntityAliveUpdate(int tick) {
-        }
+        //protected override void OnPlayerKeyDown(KeyEventArgs e) {
+        //}
 
-        protected override void OnEntityInitialize() {
-        }
+        //protected override void OnEntityAliveUpdate(int tick) {
+        //}
 
-        protected override void OnEntityPlayerNearbyUpdate(int tick) {
-        }
+        //protected override void OnEntityInitialize() {
+        //}
 
-        protected override void OnEntityPedNearby(Ped ped) {
-        }
+        //protected override void OnEntityPlayerNearbyUpdate(int tick) {
+        //}
 
-        protected override void OnEntityPlayerNearby() {
-        }
+        //protected override void OnEntityPedNearby(Ped ped) {
+        //}
 
-        protected override void OnEntityAlive() {
-        }
+        //protected override void OnEntityPlayerNearby() {
+        //}
+
+        //protected override void OnEntityAlive() {
+        //}
+
+        #endregion
 
     }
 

@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using GTA;
 using GTA.Native;
 using GTAZ.Controllable;
 using GTAZ.Peds;
 using GTAZ.Population;
-using mlgthatsme;
 
 namespace GTAZ
 {
 
     public class Main : Script {
+
+        public static bool IsToggled = true;
 
         public static int PlayerGroup;
         public static int EnemyGroup;
@@ -34,11 +33,30 @@ namespace GTAZ
             Viewport = View;
             Player = Game.Player;
 
-            UpdateRelationships();
-            _populator = new ControllablePopulator(ControlManager, 8, 3, 200f, 350f);
+            if (IsToggled) {
 
-            Interval = 1;
+                UpdatePlayerOnSpawn();
 
+                UpdateRelationships();
+                _populator = new ControllablePopulator(ControlManager, 8, 3, 200f, 350f);
+
+                Interval = 1;
+
+            }
+
+        }
+
+        public static void Toggle() {
+
+            IsToggled = !IsToggled;
+            if (!IsToggled) {
+                ControlManager.RemoveAndDeleteAll();
+            }
+
+        }
+
+        private static void UpdatePlayerOnSpawn() {
+            
         }
 
         private static void UpdateRelationships() {
@@ -56,11 +74,7 @@ namespace GTAZ
         }
 
         private static void UpdateMultipliers() {
-            Function.Call(Hash.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
-            Function.Call(Hash.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
-            Function.Call(Hash.SET_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
-            Function.Call(Hash.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
-            Function.Call(Hash.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+            
         }
 
         private static void PopulateWorld() {
@@ -83,9 +97,20 @@ namespace GTAZ
         }
 
         private static void OnTick(object sender, EventArgs eventArgs) {
-            UpdateMultipliers();
-            ControlManager.Tick();
-            PopulateWorld();
+
+            if (IsToggled) {
+
+                Function.Call(Hash.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+                Function.Call(Hash.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+                Function.Call(Hash.SET_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+                Function.Call(Hash.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+                Function.Call(Hash.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+
+                ControlManager.Tick();
+                PopulateWorld();
+
+            }
+
         }
     }
 

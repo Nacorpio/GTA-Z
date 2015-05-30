@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
-using GTA;
 using GTAZ.Controllable;
 
 namespace GTAZ.Assembly {
@@ -14,8 +12,6 @@ namespace GTAZ.Assembly {
         protected EntityAssembly(int uid, string groupId, float weightCapacity) : base(uid, groupId) {
             _weightCapacity = weightCapacity;
         }
-
-        //
 
         /// <summary>
         /// Adds a Part to this Assembly with the specified name.
@@ -56,8 +52,6 @@ namespace GTAZ.Assembly {
             return _weightCapacity;
         }
         
-
-
         /// <summary>
         /// Initializes this Assembly.
         /// </summary>

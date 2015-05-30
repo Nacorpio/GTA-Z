@@ -13,7 +13,9 @@ namespace GTAZ.Population {
     public class ControllablePopulator {
 
         public readonly PedHash[] ZombieModels = new [] {
-                PedHash.Zombie01
+                PedHash.Zombie01,
+                PedHash.Corpse01,
+                PedHash.Corpse02
         };
 
         private readonly ControlManager _manager;
@@ -72,7 +74,6 @@ namespace GTAZ.Population {
                     return;
                 }
 
-                _manager.Remove(e);
                 e.RemoveEntity();
 
             });
@@ -91,7 +92,6 @@ namespace GTAZ.Population {
                     return;
                 }
 
-                _manager.Remove(e);
                 e.RemoveEntity();
 
             });
@@ -146,6 +146,19 @@ namespace GTAZ.Population {
             PopulateWithZombie(rand.Next(0, ZombieModels.Length - 1), zped, position, min, max, rand);
         }
 
+        /*
+
+            SET_PED_COMBAT_ATTRIBUTES
+            17 - FLEE
+            5 - ATTACK ON RANGE
+            8 - RUN QUICKLY
+            9 - RUN SLOWLY
+            0 - NOTHING
+
+
+
+        */
+
         public void PopulateWithPed(ControllablePed ped, PedHash model, Vector3 position, int min, int max, Random rand) {
 
             if (!(_manager.LivingPeds.ToList().Count + 1 <= _pedCapacity && min >= 0 && max >= min)) {
@@ -155,7 +168,14 @@ namespace GTAZ.Population {
             var varRandom1 = rand.Next(min, max);
             var varPosition1 = position.Around(varRandom1);
 
-            _manager.CreatePed(ped, model, varPosition1);
+            var varPed = _manager.CreatePed(ped, model, varPosition1);
+
+            Function.Call(Hash.SET_PED_COMBAT_RANGE, varPed, max);
+            Function.Call(Hash.SET_PED_SEEING_RANGE, varPed, max / 2);
+            Function.Call(Hash.SET_PED_HEARING_RANGE, varPed, max / 4);
+
+            Function.Call(Hash.SET_PED_COMBAT_ATTRIBUTES, varPed, 26, true);
+            Function.Call(Hash.SET_PED_SUFFERS_CRITICAL_HITS, varPed, true);
 
         }
 

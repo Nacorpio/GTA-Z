@@ -30,27 +30,49 @@ namespace GTAZ.Peds {
 
         }) {}
 
-        protected override void OnEntityAlive() {}
+        #region MyRegion
+        //protected override void OnEntityAlive() {}
 
-        protected override void OnEntityDead() {
-            UI.Notify("A team member died!");
-        }
+        //protected override void OnEntityDead() {
+        //    UI.Notify("A team member died!");
+        //}
 
-        protected override void OnEntityPedNearbyUpdate(Ped ped1, int tick) {}
+        //protected override void OnEntityUpsideDown() {}
 
-        protected override void OnEntityPlayerNearbyUpdate(int tick) {}
+        //protected override void OnEntityUpsideDownUpdate(int tick) {}
 
-        protected override void OnEntityPedNearby(Ped ped1) {}
+        //protected override void OnEntityInAir() {}
 
-        protected override void OnEntityPlayerNearby() {}
+        //protected override void OnEntityInAirUpdate(int tick) {}
 
-        protected override void OnPlayerKeyDown(KeyEventArgs e) {}
+        //protected override void OnEntityInWater() {}
 
-        protected override void OnPlayerMenuOpen() {}
+        //protected override void OnEntityInWaterUpdate(int tick) {}
 
-        protected override void OnEntityAliveUpdate(int tick) {}
+        //protected override void OnEntityAttached() {}
 
-        protected override void OnEntityInitialize() {}
+        //protected override void OnEntityAttachedUpdate(int tick) {}
+
+        //protected override void OnEntityPlayerIsTouching() {}
+
+        //protected override void OnEntityPlayerIsTouchingUpdate(int tick) {}
+
+        //protected override void OnEntityPedNearbyUpdate(Ped ped1, int tick) {}
+
+        //protected override void OnEntityPlayerNearbyUpdate(int tick) {}
+
+        //protected override void OnEntityPedNearby(Ped ped1) {}
+
+        //protected override void OnEntityPlayerNearby() {}
+
+        //protected override void OnPlayerKeyDown(KeyEventArgs e) {}
+
+        //protected override void OnPlayerMenuOpen() {}
+
+        //protected override void OnEntityAliveUpdate(int tick) {}
+
+        //protected override void OnEntityInitialize() {} 
+        #endregion
 
     }
 

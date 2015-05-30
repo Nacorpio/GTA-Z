@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="mlgthatsmeMOD">
-      <HintPath>..\..\..\..\..\Desktop\GTA V Modding\mlgthatsmeMOD.dll</HintPath>
-    </Reference>
     <Reference Include="ScriptHookVDotNet">
       <HintPath>D:\Games\SteamLibrary\SteamApps\common\Grand Theft Auto V\ScriptHookVDotNet.dll</HintPath>
     </Reference>
@@ -48,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Achievements.cs" />
     <Compile Include="Assembly\EntityAssembly.cs" />
     <Compile Include="Assembly\EntityPart.cs" />
     <Compile Include="Controllable\ControllableEntity.cs" />
@@ -62,6 +60,7 @@
     <Compile Include="Peds\SurvivorPed1.cs" />
     <Compile Include="Peds\TeamPed.cs" />
     <Compile Include="Controllable\ControlManager.cs" />
+    <Compile Include="PlayerStats.cs" />
     <Compile Include="Shopping\Store.cs" />
     <Compile Include="Shopping\StoreItem.cs" />
     <Compile Include="Shopping\StoreItemStack.cs" />
@@ -73,6 +72,7 @@
     <Compile Include="Updater.cs" />
     <Compile Include="Vehicles\AbandonedVehicle.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -29,7 +29,7 @@ namespace GTAZ.Controllable {
         /// <param name="model">The model/skin of the newly spawned Ped.</param>
         /// <param name="position">The position of where to spawn the Ped.</param>
         /// <returns></returns>
-        public ControlManager CreatePed(ControllablePed cped, PedHash model, Vector3 position) {
+        public Ped CreatePed(ControllablePed cped, PedHash model, Vector3 position) {
 
             var var1 = World.CreatePed(model, position);
             var var2 = cped.Control(var1);
@@ -38,7 +38,8 @@ namespace GTAZ.Controllable {
                 return null;
             }
 
-            return Add(var2);
+            Add(var2);
+            return var1;
 
         }
 
@@ -53,7 +54,6 @@ namespace GTAZ.Controllable {
         public Vehicle CreateVehicle(ControllableVehicle cveh, VehicleHash model, Vector3 position, float heading = 0) {
 
             var var1 = World.CreateVehicle(model, position, heading);
-            
             var var2 = cveh.Control(var1);
 
             if (var2 == null) {
@@ -81,7 +81,7 @@ namespace GTAZ.Controllable {
         /// <param name="cped">The ControllableEntity to look for.</param>
         /// <returns></returns>
         public bool Contains(ControllableEntity cped) {
-            return Contains(cped.Entity) && Contains(cped.GroupId) && Contains(cped.UniqueId);
+            return Contains(cped.Entity);
         }
 
         /// <summary>
@@ -205,6 +205,11 @@ namespace GTAZ.Controllable {
         public ControlManager Remove(int uid) {
             if (Contains(uid))
                 elements.Remove(elements.Where(e => e.UniqueId == uid).ToArray()[0]);
+            return this;
+        }
+
+        public ControlManager RemoveAndDeleteAll() {
+            elements.ForEach(e => e.RemoveEntity());
             return this;
         }
 

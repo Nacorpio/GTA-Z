@@ -1,7 +1,16 @@
-﻿
+﻿using System;
+using GTA;
+using GTA.Math;
+
 namespace GTAZ.Inventory {
 
+    public delegate void ItemDropEventHandler(Ped oldHolder, Vector3 pos, object sender, EventArgs e);
+    public delegate void ItemPickupEventHandler(Ped newOwner, Vector3 pos, object sender, EventArgs e);
+
     public class ItemStack {
+
+        protected event ItemDropEventHandler Dropped;
+        protected event ItemPickupEventHandler Pickup;
 
         private readonly Item _item;
         private int _size;
@@ -11,13 +20,13 @@ namespace GTAZ.Inventory {
             _size = size;
         }
 
-        public void UseItem(params object[] args) {
+        public void UseItem(Player trigger, Ped target) {
 
             if (!(_size - 1 >= 0)) {
                 return;
             }
 
-            _item.OnItemUse(args);
+            _item.Use(trigger, target);
             _size--;
 
         }

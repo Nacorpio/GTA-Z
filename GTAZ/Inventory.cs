@@ -1,14 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GTA;
 using GTAZ.Assembly;
 
 namespace GTAZ.Inventory {
 
+    public delegate void InventoryChangedEventHandler(object sender, EventArgs e);
+    public delegate void InventoryItemUseEventHandler(int index, Player trigger, Ped target, object sender, EventArgs e);
+    public delegate void InventoryItemAddedEventHandler(ItemStack add, object sender, EventArgs e);
+
     /// <summary>
     /// Represents an inventory, storing ItemStacks.
     /// </summary>
     public abstract class Inventory : EntityPart {
+
+        protected event InventoryChangedEventHandler Shown, Closed;
+
+        protected event InventoryItemUseEventHandler ItemUsed;
+        protected event InventoryItemAddedEventHandler ItemAdded;
 
         private readonly string _name;
 
@@ -32,7 +42,7 @@ namespace GTAZ.Inventory {
         public void ShowInventory() {
 
             // TODO: Show the inventory as a menu.
-            OnInventoryShow();
+            if (Shown != null) Shown(this, EventArgs.Empty);
 
         }
 
@@ -42,26 +52,16 @@ namespace GTAZ.Inventory {
         public void CloseInventory() {
 
             // TODO: Close the inventory.
-            OnInventoryClose();
+            if (Closed != null) Closed(this, EventArgs.Empty);
 
         }
 
-        //
-
-        public abstract void OnInventoryShow();
-
-        public abstract void OnInventoryClose();
 
         //
 
-        public abstract void OnItemUse(Player player, int index);
-
-        public abstract void OnItemUse(Ped ped, int index);
-
-        //
-
-        protected void UseItem(int index, params object[] args) {
-            _items[index].UseItem(args);
+        protected void UseItem(int index, Player trigger, Ped target) {
+            _items[index].UseItem(trigger, target);
+            if (ItemUsed != null) ItemUsed(index, trigger, target, this, EventArgs.Empty);
         }
 
         public void AddItem(ItemStack item) {
@@ -77,6 +77,7 @@ namespace GTAZ.Inventory {
         public void AddItem(int index, ItemStack item) {
             if (_items.Count + 1 <= _capacity) {
                 _items[index] = item;
+                if (ItemAdded != null) ItemAdded(item, this, EventArgs.Empty);
             }
         }
 

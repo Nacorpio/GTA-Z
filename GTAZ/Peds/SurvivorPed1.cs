@@ -32,21 +32,43 @@ namespace GTAZ.Peds {
             
         }
 
-        protected override void OnEntityPlayerNearbyUpdate(int tick) {}
+        #region MyRegion
+        //protected override void OnEntityUpsideDown() {}
 
-        protected override void OnEntityPedNearby(Ped ped) {}
+        //protected override void OnEntityUpsideDownUpdate(int tick) {}
 
-        protected override void OnEntityPlayerNearby() {}
+        //protected override void OnEntityInAir() {}
 
-        protected override void OnEntityAlive() {}
+        //protected override void OnEntityInAirUpdate(int tick) {}
 
-        protected override void OnEntityDead() {}
+        //protected override void OnEntityInWater() {}
 
-        protected override void OnPlayerMenuOpen() {}
+        //protected override void OnEntityInWaterUpdate(int tick) {}
 
-        protected override void OnPlayerKeyDown(KeyEventArgs e) {}
+        //protected override void OnEntityAttached() {}
 
-        protected override void OnEntityInitialize() {}
+        //protected override void OnEntityAttachedUpdate(int tick) {}
+
+        //protected override void OnEntityPlayerIsTouching() {}
+
+        //protected override void OnEntityPlayerIsTouchingUpdate(int tick) {}
+
+        //protected override void OnEntityPlayerNearbyUpdate(int tick) {}
+
+        //protected override void OnEntityPedNearby(Ped ped) {}
+
+        //protected override void OnEntityPlayerNearby() {}
+
+        //protected override void OnEntityAlive() {}
+
+        //protected override void OnEntityDead() {}
+
+        //protected override void OnPlayerMenuOpen() {}
+
+        //protected override void OnPlayerKeyDown(KeyEventArgs e) {}
+
+        //protected override void OnEntityInitialize() {} 
+        #endregion
 
     }
 
