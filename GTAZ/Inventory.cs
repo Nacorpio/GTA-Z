@@ -13,16 +13,10 @@ namespace GTAZ.Inventory {
     public delegate void InventoryItemUseEventHandler(int index, Player trigger, Ped target, object sender, EventArgs e);
     public delegate void InventoryItemAddedEventHandler(ItemStack add, object sender, EventArgs e);
 
-    public delegate void ItemDropEventHandler(Ped oldHolder, Vector3 pos, object sender, EventArgs e);
-    public delegate void ItemPickupEventHandler(Ped newOwner, Vector3 pos, object sender, EventArgs e);
-
     /// <summary>
     /// Represents an inventory, storing ItemStacks.
     /// </summary>
     public abstract class Inventory : EntityPart {
-
-        protected event ItemDropEventHandler Dropped;
-        protected event ItemPickupEventHandler Pickup;
 
         protected event InventoryChangedEventHandler Shown, Closed;
 

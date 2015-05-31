@@ -1,4 +1,6 @@
-﻿using GTA;
+﻿using System;
+using GTA;
+using GTA.Math;
 
 namespace GTAZ.Inventory {
 
@@ -26,7 +28,9 @@ namespace GTAZ.Inventory {
             }
 
             _item.Use(trigger, target);
+           
             if (_decrementOnUse) _size--;
+            if (_size == 0) Main.PlayerInventory.RemoveItem(this);
 
         }
 

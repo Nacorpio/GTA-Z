@@ -5,12 +5,18 @@ using GTA;
 using GTA.Math;
 using GTA.Native;
 using GTAZ.Controllable;
+using GTAZ.Inventory;
 using GTAZ.Peds;
+using GTAZ.Props;
 using GTAZ.Vehicles;
 
 namespace GTAZ.Population {
 
     public class ControllablePopulator {
+
+        public const int AirdropWoodenCrateModel = -1513883840;
+        public const int AirdropCrateModel = -1586104172;
+        public const int ItemStackBoxModel = 1388415578;
 
         public readonly PedHash[] ZombieModels = new [] {
                 PedHash.Zombie01,
@@ -63,6 +69,10 @@ namespace GTAZ.Population {
 
             });
 
+        }
+
+        public void SpawnItemStack(ItemStack stack, Vector3 position) {
+            Main.ControlManager.CreateProp(new DroppedItemStackProp(Main.ControlManager.EntityCount, stack), new Model(ItemStackBoxModel), position, Vector3.WorldNorth, true, true);
         }
 
         public void PopulateWithAbandonedVehicle(Vector3 position, int min, int max, Random rand) {

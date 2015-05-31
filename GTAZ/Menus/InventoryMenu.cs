@@ -40,6 +40,10 @@ namespace GTAZ.Menus {
                 _inventory.Items.ForEach(i => {
 
                     var btnItem = new ItemButton(i);
+                    btnItem.OnPress += (sender, args) => {
+                        BtnItemOnOnPress(_inventory, i, sender, args);
+                    };
+
                     AddMenuItem(btnItem);
 
                 });

@@ -40,6 +40,17 @@ namespace GTAZ.Menus {
                 };
 
                 var btnDrop = new Button("Drop Item");
+                btnDrop.OnPress += (sender, args) => {
+
+                    Main.Populator.SpawnItemStack(_stack, Main.Player.Character.Position);
+                    Main.PlayerInventory.RemoveItem(_stack);
+
+                    UI.Notify("Dropped the stack on the ground");
+
+                    Manager.RefreshAllMenus();
+                    Manager.CloseCurrentWindow();
+
+                };
 
                 AddMenuItem(btnUse);
                 AddMenuItem(btnDrop);

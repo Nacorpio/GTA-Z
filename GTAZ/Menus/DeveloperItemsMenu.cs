@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using GTA;
+using GTAZ.Inventory;
 using mlgthatsme.GUI;
 
 namespace GTAZ.Menus {
@@ -31,25 +32,36 @@ namespace GTAZ.Menus {
                 MaxValue = 16,
                 IncrementValue = 1
             };
+
             sliderQuantity.ValueChanged += (sender, args) => {
                 sliderQuantity.Text = "Quantity (" + sliderQuantity.Value + ")";
             };
 
-            var multiInventory = new Multichoice() {
-                Text = "Inventory",
-                Choices = new [] {"Player Inventory"}
+            var multiWhere = new Multichoice() {
+                Text = "Where",
+                Choices = new [] {"Player Inventory", "On ground"}
             };
 
             var buttonSpawn = new Button("Spawn");
             buttonSpawn.OnPress += (sender, args) => {
-                Main.PlayerInventory.AddItem(ItemsDef.Items[multiItems.GetChoiceIndex()], sliderQuantity.Value);
-                UI.Notify("The selected item has been added to the specified inventory");
+                
+                switch (multiWhere.GetSelectedChoice()) {
+                    case "On ground":
+                        Main.Populator.SpawnItemStack(new ItemStack(ItemsDef.Items[multiItems.GetChoiceIndex()], sliderQuantity.Value), Main.Player.Character.Position);
+                        break;
+                    case "Player Inventory":
+                        Main.PlayerInventory.AddItem(ItemsDef.Items[multiItems.GetChoiceIndex()], sliderQuantity.Value);
+                        break;
+                }
+
+                UI.Notify("The selected item has been spawned");
+
             };
 
             AddMenuItem(dividerOptions);
             AddMenuItem(multiItems);
             AddMenuItem(sliderQuantity);
-            AddMenuItem(multiInventory);
+            AddMenuItem(multiWhere);
             AddMenuItem(buttonSpawn);
 
         }

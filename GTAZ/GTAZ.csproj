@@ -63,6 +63,7 @@
     <Compile Include="Inventory\VehicleInventory.cs" />
     <Compile Include="ItemsDef.cs" />
     <Compile Include="Items\ItemExample.cs" />
+    <Compile Include="Loot.cs" />
     <Compile Include="Menus\DeveloperItemsMenu.cs" />
     <Compile Include="Menus\DeveloperMenu.cs" />
     <Compile Include="Menus\InventoryMenu.cs" />

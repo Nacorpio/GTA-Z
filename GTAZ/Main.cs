@@ -3,12 +3,14 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using GTA;
+using GTA.Math;
 using GTA.Native;
 using GTAZ.Controllable;
 using GTAZ.Inventory;
 using GTAZ.Menus;
 using GTAZ.Peds;
 using GTAZ.Population;
+using GTAZ.Props;
 using mlgthatsme.GUI;
 
 namespace GTAZ
@@ -26,7 +28,7 @@ namespace GTAZ
         public static int ZombieGroup;
 
         public readonly static ControlManager ControlManager = new ControlManager();
-        private static ControllablePopulator _populator;
+        public static ControllablePopulator Populator;
 
         public static Viewport Viewport;
         public static Player Player;
@@ -42,7 +44,7 @@ namespace GTAZ
             WindowManager = new WindowManager();
 
             UpdateRelationships();
-            _populator = new ControllablePopulator(ControlManager, 8, 3, 200f, 350f);
+            Populator = new ControllablePopulator(ControlManager, 8, 3, 200f, 350f);
 
             Interval = 1;
 
@@ -76,11 +78,11 @@ namespace GTAZ
             if (IsToggled) {
 
                 // _populator.PopulateWithPed(new ZombiePed(ControlManager.LivingPeds.ToList().Count), PedHash.Zombie01, Player.Character.Position, 25, 150, new Random(Game.GameTime));
-                _populator.PopulateWithRandomZombie(new ZombiePed(ControlManager.Entities.ToList().Count), Player.Character.Position, 25, 150, new Random(Game.GameTime));
-                _populator.PopulateWithAbandonedVehicle(Player.Character.Position, 50, 300, new Random(Game.GameTime));
+                Populator.PopulateWithRandomZombie(new ZombiePed(ControlManager.Entities.ToList().Count), Player.Character.Position, 25, 150, new Random(Game.GameTime));
+                Populator.PopulateWithAbandonedVehicle(Player.Character.Position, 50, 300, new Random(Game.GameTime));
 
                 // Despawns all the entities that are out of its range.
-                _populator.DespawnOutOfRange();
+                Populator.DespawnOutOfRange();
 
             }
 
@@ -94,6 +96,10 @@ namespace GTAZ
 
             ControlManager.KeyDown(keyEventArgs);
             WindowManager.KeyDown(sender, keyEventArgs);
+
+            if (keyEventArgs.KeyCode == Keys.I) {
+                Populator.SpawnItemStack(new ItemStack(ItemsDef.ItemExample, 1), Player.Character.Position);
+            }
 
             if (WindowManager.MenuList.Count == 0) {
 
