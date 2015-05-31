@@ -5,15 +5,21 @@ using System.Windows.Forms;
 using GTA;
 using GTA.Native;
 using GTAZ.Controllable;
+using GTAZ.Inventory;
+using GTAZ.Menus;
 using GTAZ.Peds;
 using GTAZ.Population;
+using mlgthatsme.GUI;
 
 namespace GTAZ
 {
 
     public class Main : Script {
 
-        public static bool IsToggled = true;
+        public static PlayerInventory PlayerInventory = new PlayerInventory();
+
+        public static WindowManager WindowManager;
+        public static bool IsToggled;
 
         public static int PlayerGroup;
         public static int EnemyGroup;
@@ -33,16 +39,12 @@ namespace GTAZ
             Viewport = View;
             Player = Game.Player;
 
-            if (IsToggled) {
+            WindowManager = new WindowManager();
 
-                UpdatePlayerOnSpawn();
+            UpdateRelationships();
+            _populator = new ControllablePopulator(ControlManager, 8, 3, 200f, 350f);
 
-                UpdateRelationships();
-                _populator = new ControllablePopulator(ControlManager, 8, 3, 200f, 350f);
-
-                Interval = 1;
-
-            }
+            Interval = 1;
 
         }
 
@@ -53,10 +55,6 @@ namespace GTAZ
                 ControlManager.RemoveAndDeleteAll();
             }
 
-        }
-
-        private static void UpdatePlayerOnSpawn() {
-            
         }
 
         private static void UpdateRelationships() {
@@ -73,18 +71,18 @@ namespace GTAZ
 
         }
 
-        private static void UpdateMultipliers() {
-            
-        }
-
         private static void PopulateWorld() {
 
-            // _populator.PopulateWithPed(new ZombiePed(ControlManager.LivingPeds.ToList().Count), PedHash.Zombie01, Player.Character.Position, 25, 150, new Random(Game.GameTime));
-            _populator.PopulateWithRandomZombie(new ZombiePed(ControlManager.LivingPeds.ToList().Count), Player.Character.Position, 25, 150, new Random(Game.GameTime));
-            _populator.PopulateWithAbandonedVehicle(Player.Character.Position, 50, 300, new Random(Game.GameTime));
+            if (IsToggled) {
 
-            // Despawns all the entities that are out of its range.
-            _populator.DespawnOutOfRange();
+                // _populator.PopulateWithPed(new ZombiePed(ControlManager.LivingPeds.ToList().Count), PedHash.Zombie01, Player.Character.Position, 25, 150, new Random(Game.GameTime));
+                _populator.PopulateWithRandomZombie(new ZombiePed(ControlManager.Entities.ToList().Count), Player.Character.Position, 25, 150, new Random(Game.GameTime));
+                _populator.PopulateWithAbandonedVehicle(Player.Character.Position, 50, 300, new Random(Game.GameTime));
+
+                // Despawns all the entities that are out of its range.
+                _populator.DespawnOutOfRange();
+
+            }
 
         }
 
@@ -93,25 +91,37 @@ namespace GTAZ
         }
 
         private static void OnKeyDown(object sender, KeyEventArgs keyEventArgs) {
+
             ControlManager.KeyDown(keyEventArgs);
-        }
+            WindowManager.KeyDown(sender, keyEventArgs);
 
-        private static void OnTick(object sender, EventArgs eventArgs) {
+            if (WindowManager.MenuList.Count == 0) {
 
-            if (IsToggled) {
-
-                Function.Call(Hash.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
-                Function.Call(Hash.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
-                Function.Call(Hash.SET_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
-                Function.Call(Hash.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
-                Function.Call(Hash.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
-
-                ControlManager.Tick();
-                PopulateWorld();
+                switch (keyEventArgs.KeyCode) {
+                    case Keys.F7:
+                        WindowManager.AddMenu(new PlayerMainMenu());
+                        break;
+                }
 
             }
 
         }
+
+        private static void OnTick(object sender, EventArgs eventArgs) {
+
+            Function.Call(Hash.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+            Function.Call(Hash.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+            Function.Call(Hash.SET_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+            Function.Call(Hash.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+            Function.Call(Hash.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
+
+            ControlManager.Tick();
+            WindowManager.OnTick(sender, eventArgs);
+
+            PopulateWorld();
+
+        }
+
     }
 
 }

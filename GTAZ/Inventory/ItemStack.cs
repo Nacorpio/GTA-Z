@@ -7,11 +7,18 @@ namespace GTAZ.Inventory {
         private readonly Item _item;
         private int _size;
 
+        private bool _decrementOnUse = true;
+
         public ItemStack(Item item, int size) {
             _item = item;
             _size = size;
         }
 
+        /// <summary>
+        /// Uses the Item of this ItemStack as the specified trigger and on the specified target Ped.
+        /// </summary>
+        /// <param name="trigger">The Player of which triggered this action.</param>
+        /// <param name="target">The Ped of which is the target of this action.</param>
         public void UseItem(Player trigger, Ped target) {
 
             if (!(_size - 1 >= 0)) {
@@ -19,8 +26,12 @@ namespace GTAZ.Inventory {
             }
 
             _item.Use(trigger, target);
-            _size--;
+            if (_decrementOnUse) _size--;
 
+        }
+
+        public void SetDecrementOnUse(bool value) {
+            _decrementOnUse = value;
         }
 
         /// <summary>

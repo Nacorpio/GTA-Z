@@ -47,6 +47,34 @@ namespace GTAZ.Controllable {
         }
 
         /// <summary>
+        /// Creates a prop with dynamic physics using the specified wrapper, model, position and rotation.
+        /// </summary>
+        /// <param name="cprop">The wrapper to wrap around the newly spawned Prop.</param>
+        /// <param name="model">The model of the newly spawned Prop.</param>
+        /// <param name="position">The position of where to spawn the Prop.</param>
+        /// <param name="rotation">The rotation of the newly spawned Prop.</param>
+        /// <param name="ground">Whether to place the newly spawned Prop on the ground properly.</param>
+        /// <returns></returns>
+        public Prop CreateDynamicProp(ControllableProp cprop, Model model, Vector3 position, Vector3 rotation,
+            bool ground) {
+            return CreateProp(cprop, model, position, rotation, true, ground);
+        }
+
+        /// <summary>
+        /// Creates a prop with static physics using the specified wrapper, model, position and rotation.
+        /// </summary>
+        /// <param name="cprop">The wrapper to wrap around the newly spawned Prop.</param>
+        /// <param name="model">The model of the newly spawned Prop.</param>
+        /// <param name="position">The position of where to spawn the Prop.</param>
+        /// <param name="rotation">The rotation of the newly spawned Prop.</param>
+        /// <param name="ground">Whether to place the newly spawned Prop on the ground properly.</param>
+        /// <returns></returns>
+        public Prop CreateStaticProp(ControllableProp cprop, Model model, Vector3 position, Vector3 rotation,
+            bool ground) {
+            return CreateProp(cprop, model, position, rotation, false, ground);
+        }
+
+        /// <summary>
         /// Creates a ped with the specified wrapper, model and at the specified position.
         /// </summary>
         /// <param name="cped">The wrapper to wrap around the newly spawned Ped.</param>

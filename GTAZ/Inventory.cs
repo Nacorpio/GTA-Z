@@ -4,6 +4,8 @@ using System.Linq;
 using GTA;
 using GTA.Math;
 using GTAZ.Assembly;
+using GTAZ.Menus;
+using mlgthatsme.GUI;
 
 namespace GTAZ.Inventory {
 
@@ -32,16 +34,15 @@ namespace GTAZ.Inventory {
         private readonly int _capacity;
         private readonly List<ItemStack> _items;
 
-        private object _menu;
-
-        protected Inventory(string name, object menu, int capacity = 16) : base(name) {
+        protected Inventory(string name, int capacity = 16) : base(name) {
             _name = name;
             _items = new List<ItemStack>(capacity);
             _capacity = capacity;
-            _menu = menu;
         }
 
         //
+
+        protected abstract BaseMenu GetMenu();
 
         protected void UseItem(int index, Player trigger, Ped target) {
             _items[index].UseItem(trigger, target);
@@ -51,8 +52,6 @@ namespace GTAZ.Inventory {
 
         public void DropItem(int index) {
             
-
-
         }
 
         /// <summary>
@@ -61,6 +60,7 @@ namespace GTAZ.Inventory {
         public void ShowInventory() {
 
             // TODO: Show the inventory as a menu.
+            Main.WindowManager.AddMenu(GetMenu());
             if (Shown != null) Shown(this, EventArgs.Empty);
 
         }
@@ -71,19 +71,39 @@ namespace GTAZ.Inventory {
         public void CloseInventory() {
 
             // TODO: Close the inventory.
+            GetMenu().Close();
             if (Closed != null) Closed(this, EventArgs.Empty);
 
         }
 
-
-        //
-
-        
-
         public void AddItem(ItemStack item) {
+
             if (_items.Count + 1 <= _capacity) {
+
+                if (ContainsItem(item.Item)) {
+
+                    var stacks = Get(item.Item).ToArray();
+                    var stack = stacks[stacks.Length - 1];
+
+                    if (stack.Size + item.Size >= item.Item.GetMaxStackSize()) {
+
+                        var diff = (stack.Size + item.Size) - item.Item.GetMaxStackSize();
+                        var diff1 = stack.Size - diff;
+
+                        stack.SetSize(diff1);
+                        _items.Add(new ItemStack(item.Item, diff));
+
+                    }
+
+                    stack.SetSize(stack.Size + item.Size);
+                    return;
+
+                }
+
                 _items.Add(item);
+
             }
+
         }
 
         public void AddItem(Item item, int size = 1) {
@@ -95,6 +115,14 @@ namespace GTAZ.Inventory {
                 _items[index] = item;
                 if (ItemAdded != null) ItemAdded(item, this, EventArgs.Empty);
             }
+        }
+
+        public IEnumerable<ItemStack> Get(Item item) {
+            return _items.Where(i => i.Item == item);
+        }
+
+        public bool ContainsItem(Item item) {
+            return _items.Any(i => i.Item == item);
         }
 
         public bool ContainsItem(ItemStack item) {

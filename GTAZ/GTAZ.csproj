@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NativePI">
+      <HintPath>D:\Games\SteamLibrary\SteamApps\common\Grand Theft Auto V\NativePI.dll</HintPath>
+    </Reference>
     <Reference Include="ScriptHookVDotNet">
       <HintPath>D:\Games\SteamLibrary\SteamApps\common\Grand Theft Auto V\ScriptHookVDotNet.dll</HintPath>
     </Reference>
@@ -58,10 +61,21 @@
     <Compile Include="Inventory\PedInventory.cs" />
     <Compile Include="Inventory\PlayerInventory.cs" />
     <Compile Include="Inventory\VehicleInventory.cs" />
+    <Compile Include="ItemsDef.cs" />
+    <Compile Include="Items\ItemExample.cs" />
+    <Compile Include="Menus\DeveloperItemsMenu.cs" />
+    <Compile Include="Menus\DeveloperMenu.cs" />
+    <Compile Include="Menus\InventoryMenu.cs" />
+    <Compile Include="Menus\PlayerInventoryMenu.cs" />
+    <Compile Include="Menus\VehicleHoodMenu.cs" />
+    <Compile Include="Menus\VehicleInventoryMenu.cs" />
+    <Compile Include="Menus\ManageItemMenu.cs" />
+    <Compile Include="Menus\PlayerMainMenu.cs" />
     <Compile Include="Peds\SurvivorPed1.cs" />
     <Compile Include="Peds\TeamPed.cs" />
     <Compile Include="Controllable\ControlManager.cs" />
     <Compile Include="PlayerStats.cs" />
+    <Compile Include="Props\DroppedItemStackProp.cs" />
     <Compile Include="Shopping\Store.cs" />
     <Compile Include="Shopping\StoreItem.cs" />
     <Compile Include="Shopping\StoreItemStack.cs" />

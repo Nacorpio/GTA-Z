@@ -15,6 +15,8 @@ namespace GTAZ.Inventory {
         private readonly int _id;
         private readonly string _name;
 
+        private int _maxStackSize;
+
         protected Item(int id, string name) {
             _id = id;
             _name = name;
@@ -39,6 +41,18 @@ namespace GTAZ.Inventory {
             get { return _name; }
         }
 
+        public int GetMaxStackSize() {
+            return _maxStackSize;
+        }
+
+        public Item SetStackSize(int size) {
+            _maxStackSize = size;
+            return this;
+        }
+
+        public override string ToString() {
+            return  _id + " ("+  _name + ")";
+        }
     }
 
 }

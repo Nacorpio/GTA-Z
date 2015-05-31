@@ -65,42 +65,6 @@ namespace GTAZ.Population {
 
         }
 
-        public void DespawnPeds() {
-
-            _manager.LivingPeds.ToList().ForEach(e => {
-
-                if (e.Keep) {
-                    return;
-                }
-
-                if (!(e.Entity.Position.DistanceTo(Main.Player.Character.Position) >= _pedDespawnRange)) {
-                    return;
-                }
-
-                e.RemoveEntity();
-
-            });
-
-        }
-
-        public void DespawnVehicles() {
-
-            _manager.LivingVehicles.ToList().ForEach(e => {
-
-                if (e.Keep) {
-                    return;
-                }
-
-                if (!(e.Entity.Position.DistanceTo(Main.Player.Character.Position) >= _vehicleDespawnRange)) {
-                    return;
-                }
-
-                e.RemoveEntity();
-
-            });
-
-        }
-
         public void PopulateWithAbandonedVehicle(Vector3 position, int min, int max, Random rand) {
 
             var prob = rand.Next(1, 101);
@@ -120,11 +84,9 @@ namespace GTAZ.Population {
                 model = VehicleHash.Ingot;
             }
 
-            PopulateWithVehicle(new AbandonedVehicle(_manager.LivingVehicles.ToList().Count), model, position, min, max, rand);
+            PopulateWithVehicle(new AbandonedVehicle(_manager.Entities.ToList().Count), model, position, min, max, rand);
 
         }
-
-        
 
         public void PopulateWithVehicle(ControllableVehicle vehicle, VehicleHash model, Vector3 position, int min, int max, Random rand) {
 
@@ -172,6 +134,11 @@ namespace GTAZ.Population {
             var varPosition1 = position.Around(varRandom1);
 
             var varPed = _manager.CreatePed(ped, model, varPosition1);
+
+            // PED::APPLY_PED_BLOOD(l_68, 3, 0f, 0f, 0f, "wound_sheet");
+            // PED::APPLY_PED_DAMAGE_PACK(a_0, "HOSPITAL_0", 0.0, 1.0);
+
+            Function.Call(Hash.APPLY_PED_DAMAGE_PACK, varPed, "HOSPITAL_0", 0.0, 1.0);
 
             Function.Call(Hash.SET_PED_COMBAT_RANGE, varPed, max);
             Function.Call(Hash.SET_PED_SEEING_RANGE, varPed, max / 2);

@@ -42,8 +42,10 @@ namespace GTAZ.Peds {
         }
 
         private void OnInitialize(object sender, EventArgs eventArgs) {
+
             Ped.AlwaysKeepTask = true;
             Ped.Task.FightAgainst(Main.Player.Character);
+
         }
 
     }

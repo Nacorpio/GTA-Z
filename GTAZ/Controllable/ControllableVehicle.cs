@@ -112,7 +112,10 @@ namespace GTAZ.Controllable {
         protected override void InitializeAssembly() {
 
             // Initialize the Parts every wrapped vehicle should have in its Assembly.
-            AddPart("Inventory", new VehicleInventory());
+            var inventory = new VehicleInventory();
+            inventory.AddItem(ItemsDef.ItemExample);
+
+            AddPart("Inventory", inventory);
 
         }
 
