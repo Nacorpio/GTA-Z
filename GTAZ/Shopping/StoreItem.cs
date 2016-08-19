@@ -1,23 +1,20 @@
-﻿
-using System.Drawing.Imaging;
-using GTA;
+﻿using GTA;
 
-namespace GTAZ.Shopping {
-
-    public abstract class StoreItem {
-
+namespace GTAZ.Shopping
+{
+    public abstract class StoreItem
+    {
         protected readonly string Name;
         private readonly int _id;
 
         private bool _available = true;
 
-        protected StoreItem(int id, string name, float price) {
+        protected StoreItem(int id, string name, float price)
+        {
             _id = id;
             Name = name;
             Price = price;
         }
-
-        //
 
         public abstract void OnStoreItemPurchase(Player player);    
 
@@ -25,22 +22,24 @@ namespace GTAZ.Shopping {
 
         public abstract void OnStoreItemUse(Ped ped);
 
-        //
+        public float Price
+        {
+            get; set;
+        }
 
-        public float Price { get; set; }
-
-        public void SetAvailable(bool value) {
+        public void SetAvailable(bool value)
+        {
             _available = value;
         }
 
-        public int GetId() {
+        public int GetId()
+        {
             return _id;
         }
 
-        public string GetDisplayName() {
+        public string GetDisplayName()
+        {
             return Name;
         }
-
     }
-
 }

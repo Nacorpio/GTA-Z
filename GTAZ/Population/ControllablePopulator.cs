@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using GTA;
 using GTA.Math;
@@ -10,18 +9,19 @@ using GTAZ.Peds;
 using GTAZ.Props;
 using GTAZ.Vehicles;
 
-namespace GTAZ.Population {
-
-    public class ControllablePopulator {
-
+namespace GTAZ.Population
+{
+    public class ControllablePopulator
+    {
         public const int AirdropWoodenCrateModel = -1513883840;
         public const int AirdropCrateModel = -1586104172;
         public const int ItemStackBoxModel = 1388415578;
 
-        public readonly PedHash[] ZombieModels = new [] {
-                PedHash.Zombie01,
-                PedHash.Corpse01,
-                PedHash.Corpse02
+        public readonly PedHash[] ZombieModels =
+        {
+            PedHash.Zombie01,
+            PedHash.Corpse01,
+            PedHash.Corpse02
         };
 
         private readonly ControlManager _manager;
@@ -33,7 +33,8 @@ namespace GTAZ.Population {
         private readonly float _vehicleDespawnRange;
         private readonly float _propDespawnRange;
 
-        public ControllablePopulator(ControlManager manager, int pedCapacity, int vehicleCapacity, float pedDespawnRange, float vehicleDespawnRange) {
+        public ControllablePopulator(ControlManager manager, int pedCapacity, int vehicleCapacity, float pedDespawnRange, float vehicleDespawnRange)
+        {
             _manager = manager;
             _pedCapacity = pedCapacity;
             _vehicleCapacity = vehicleCapacity;
@@ -41,28 +42,30 @@ namespace GTAZ.Population {
             _vehicleDespawnRange = vehicleDespawnRange;
         }
 
-        public void DespawnOutOfRange() {
-            
-            _manager.LivingEntities.ToList().ForEach(e => {
-
-                if (e.Keep) {
-                    // The entity is going to be kept.
+        public void DespawnOutOfRange()
+        {
+            _manager.GetLivingEntities().ToList().ForEach(e =>
+            {
+                if (e.Keep)
                     return;
-                } 
 
                 var despawnRange = 0f;
 
-                if (e.Entity is Ped) {
+                if (e.Entity is Ped)
+                {
                     despawnRange = _pedDespawnRange;
-                } else if (e.Entity is Vehicle) {
+                }
+                else if (e.Entity is Vehicle)
+                {
                     despawnRange = _vehicleDespawnRange;
-                } else if (e.Entity is Prop) {
+                }
+                else if (e.Entity is Prop)
+                {
                     despawnRange = _propDespawnRange;
                 }
 
-                if (!(e.Entity.Position.DistanceTo(Main.Player.Character.Position) >= despawnRange)) {
+                if (!(e.Entity.Position.DistanceTo(Main.Player.Character.Position) >= despawnRange))
                     return;
-                }
 
                 _manager.Remove(e);
                 e.RemoveEntity();
@@ -71,74 +74,80 @@ namespace GTAZ.Population {
 
         }
 
-        public void SpawnItemStack(ItemStack stack, Vector3 position) {
+        public void SpawnItemStack(ItemStack stack, Vector3 position)
+        {
             Main.ControlManager.CreateProp(new DroppedItemStackProp(Main.ControlManager.EntityCount, stack), new Model(ItemStackBoxModel), position, Vector3.WorldNorth, true, true);
         }
 
-        public void PopulateWithAbandonedVehicle(Vector3 position, int min, int max, Random rand) {
-
+        public void PopulateWithAbandonedVehicle(Vector3 position, int min, int max, Random rand)
+        {
             var prob = rand.Next(1, 101);
             VehicleHash model;
 
-            if (prob <= 25) {
+            if (prob <= 25)
+            {
                 model = VehicleHash.Tornado2;
-            } else if (prob <= 25) {
+            }
+            else if (prob <= 25)
+            {
                 model = VehicleHash.Emperor2;
-            } else if (prob <= 5) {
+            }
+            else if (prob <= 5)
+            {
                 model = VehicleHash.Rhapsody;
-            } else if (prob <= 5) {
+            }
+            else if (prob <= 5)
+            {
                 model = VehicleHash.Journey;
-            } else if (prob <= 5) {
+            }
+            else if (prob <= 5)
+            {
                 model = VehicleHash.Surfer;
-            } else {
+            }
+            else
+            {
                 model = VehicleHash.Ingot;
             }
 
-            PopulateWithVehicle(new AbandonedVehicle(_manager.Entities.ToList().Count), model, position, min, max, rand);
-
+            PopulateWithVehicle(new AbandonedVehicle(_manager.GetEntities().Count), model, position, min, max, rand);
         }
 
-        public void PopulateWithVehicle(ControllableVehicle vehicle, VehicleHash model, Vector3 position, int min, int max, Random rand) {
-
-            if (!(_manager.LivingVehicles.ToList().Count + 1 <= _vehicleCapacity && min >= 0 && max >= min)) {
+        public void PopulateWithVehicle(ControllableVehicle vehicle, VehicleHash model, Vector3 position, int min, int max, Random rand)
+        {
+            if (!(_manager.GetLivingVehicles().ToList().Count + 1 <= _vehicleCapacity && min >= 0 && max >= min))
                 return;
-            }
 
             var varRandom1 = rand.Next(min, max);
             var varPosition1 = position.Around(varRandom1);
 
             var veh = _manager.CreateVehicle(vehicle, model, varPosition1, rand.Next(0, 360));
             veh.PlaceOnNextStreet();
-
         }
 
-        public void PopulateWithZombie(int index, ZombiePed zped, Vector3 position, int min, int max, Random rand) {
+        public void PopulateWithZombie(int index, ZombiePed zped, Vector3 position, int min, int max, Random rand)
+        {
             var model = ZombieModels[index];
             PopulateWithPed(zped, model, position, min, max, rand);
         }
 
-        public void PopulateWithRandomZombie(ZombiePed zped, Vector3 position, int min, int max, Random rand) {
+        public void PopulateWithRandomZombie(ZombiePed zped, Vector3 position, int min, int max, Random rand)
+        {
             PopulateWithZombie(rand.Next(0, ZombieModels.Length - 1), zped, position, min, max, rand);
         }
 
         /*
-
             SET_PED_COMBAT_ATTRIBUTES
             17 - FLEE
             5 - ATTACK ON RANGE
             8 - RUN QUICKLY
             9 - RUN SLOWLY
             0 - NOTHING
-
-
-
         */
 
-        public void PopulateWithPed(ControllablePed ped, PedHash model, Vector3 position, int min, int max, Random rand) {
-
-            if (!(_manager.LivingPeds.ToList().Count + 1 <= _pedCapacity && min >= 0 && max >= min)) {
+        public void PopulateWithPed(ControllablePed ped, PedHash model, Vector3 position, int min, int max, Random rand)
+        {
+            if (!(_manager.GetLivingPeds().ToList().Count + 1 <= _pedCapacity && min >= 0 && max >= min))
                 return;
-            }
 
             var varRandom1 = rand.Next(min, max);
             var varPosition1 = position.Around(varRandom1);
@@ -156,9 +165,6 @@ namespace GTAZ.Population {
 
             Function.Call(Hash.SET_PED_COMBAT_ATTRIBUTES, varPed, 26, true);
             Function.Call(Hash.SET_PED_SUFFERS_CRITICAL_HITS, varPed, true);
-
         }
-
     }
-
 }

@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using GTA;
 using GTA.Math;
 using GTA.Native;
-using GTAV_purge_mod;
 
 namespace GTAZ.Controllable {
 
@@ -15,10 +14,10 @@ namespace GTAZ.Controllable {
     public delegate void EntityAliveUpdateEventHandler(int tick, object sender, EventArgs e);
 
     /// <summary>
-    /// A wrapper providing a way to keep track of an Entity.
+    /// Represents a wrapper providing a way to keep track of an Entity.
     /// </summary>
-    public abstract class ControllableEntity : Updater {
-
+    public abstract class ControllableEntity : Updater
+    {
         protected event ChangedEventHandler AirEnter, WaterEnter, UpsideDown, Attached, TouchPlayer, PlayerNearby, Dead, Initialize, Alive;
 
         protected event PedNearbyEventHandler PedNearby;
@@ -28,12 +27,16 @@ namespace GTAZ.Controllable {
         private Entity _entity;
         private float _interactionDistance = 2f;
 
-        protected ControllableEntity(int uid, string groupId) {
+        /// <summary>
+        /// Initializes an instance of the <see cref="ControllableEntity"/> class.
+        /// </summary>
+        /// <param name="uid">The unique identifier.</param>
+        /// <param name="groupId">The group identifier.</param>
+        protected ControllableEntity(int uid, string groupId)
+        {
             UniqueId = uid;
             GroupId = groupId;
         }
-
-        //
 
         /// <summary>
         /// Returns whether this ControllableEntity should be kept in OutOfRange despawnings.
@@ -53,21 +56,23 @@ namespace GTAZ.Controllable {
         /// <summary>
         /// Returns the Entity that is being wrapped around in this ControllableEntity.
         /// </summary>
-        public Entity Entity { get { return _entity; }}
+        public Entity Entity => _entity;
 
         /// <summary>
         /// Returns the ControllableEntities that the wrapped Entity has been damaged by.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<ControllableEntity> GetDamagedBy() {
-            return Main.ControlManager.Entities.Where(e => Entity.HasBeenDamagedBy(e.Entity));
+        public IEnumerable<ControllableEntity> GetDamagedBy()
+        {
+            return Main.ControlManager.GetEntities().Where(e => Entity.HasBeenDamagedBy(e.Entity));
         } 
 
         /// <summary>
         /// Sets the distance of which the player has to be to this entity to fire the KeyDown event.
         /// </summary>
         /// <param name="distance">The distance units.</param>
-        protected void SetInteractionDistance(float distance) {
+        protected void SetInteractionDistance(float distance)
+        {
             if (distance >= 0)
                 _interactionDistance = distance;
         }
@@ -75,44 +80,38 @@ namespace GTAZ.Controllable {
         /// <summary>
         /// Places this ControllableEntity on the closest StreetNode.
         /// </summary>
-        protected void PlaceOnNextStreet() {
-
+        protected void PlaceOnNextStreet()
+        {
             var pos = Entity.Position;
             var outPos = new OutputArgument();
 
-            for (var i = 0; i < 40; i++) {
-
+            for (var i = 0; i < 40;)
+            {
                 Function.Call(Hash.GET_NTH_CLOSEST_VEHICLE_NODE, pos.X, pos.Y, pos.Z, i, outPos, 1, 0x40400000, 0);
                 var newPos = outPos.GetResult<Vector3>();
 
-                if (Function.Call<bool>(Hash.IS_POINT_OBSCURED_BY_A_MISSION_ENTITY, newPos.X, newPos.Y, newPos.Z, 5.0f, 5.0f, 5.0f, 0)) {
+                if (Function.Call<bool>(Hash.IS_POINT_OBSCURED_BY_A_MISSION_ENTITY, newPos.X, newPos.Y, newPos.Z, 5.0f, 5.0f, 5.0f, 0))
                     return;
-                }
 
                 Entity.Position = newPos;
                 break;
-
             }
-
         }
-
-        //
 
         /// <summary>
         /// Controls the specified Entity with this ControllableEntity.
         /// </summary>
         /// <param name="entity">The Entity to wrap around.</param>
         /// <returns></returns>
-        public ControllableEntity Control(Entity entity) {
+        public ControllableEntity Control(Entity entity)
+        {
+            if (_entity != null)
+                return this;
 
-            if (_entity == null)
-
-                _entity = entity;
-                ApplyChanges();
-                
+            _entity = entity;
+            ApplyChanges();
 
             return this;
-
         }
 
         /// <summary>
@@ -120,8 +119,8 @@ namespace GTAZ.Controllable {
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public void KeyDown(KeyEventArgs e) {
-
+        public void KeyDown(KeyEventArgs e)
+        {
             if (e == null)
                 return;
 
@@ -129,17 +128,11 @@ namespace GTAZ.Controllable {
                 return;
 
             if (!(IsActive && Entity.IsInRangeOf(Main.Player.Character.Position, _interactionDistance) &&
-                !Main.Player.Character.IsInVehicle())) {
-
+                !Main.Player.Character.IsInVehicle()))
                 return;
-
-            }
             
             PlayerKeyDown(this, e);
-
         }
-
-        //
 
         /// <summary>
         /// This event has to be fired on every update of this ControllableEntity.
@@ -153,8 +146,6 @@ namespace GTAZ.Controllable {
         private int _playerNearbyTicks, _pedNearbyTicks, _playerTouchingTicks, _entityIsAttachedTicks,
                     _entityInAirTicks, _entityInWaterTicks, _entityUpsideDownTicks;
 
-        //
-
         /// <summary>
         /// This event has to be fired on every active update of this ControllableEntity.
         /// </summary>
@@ -162,144 +153,125 @@ namespace GTAZ.Controllable {
         /// <param name="tick">The current tick.</param>
         protected override void OnActiveUpdate(int activeTick, int tick) {
 
-            if (_entity == null) {
+            if (_entity == null)
+            {
                 Entity.Delete();
                 return;
             }
 
-            if (Entity.IsAlive) {
-
-                if (AliveUpdate != null) AliveUpdate(_aliveTicks, this, EventArgs.Empty);
+            if (Entity.IsAlive)
+            {
+                AliveUpdate?.Invoke(_aliveTicks, this, EventArgs.Empty);
 
                 if (Initialize == null)
                     return;
 
                 if (_aliveTicks == 0)
-                    if (Alive != null) Alive(this, EventArgs.Empty);
+                    Alive?.Invoke(this, EventArgs.Empty);
 
                 _aliveTicks++;
 
-                foreach (var entity in Main.ControlManager.LivingPeds) {
-
-                    if (Entity.IsInRangeOf(entity.Entity.Position, _interactionDistance)) {
-
-                        if (_pedNearbyTicks == 0) {
-                            if (PedNearby != null) PedNearby((Ped) entity.Entity, this, EventArgs.Empty);
-                        }
+                foreach (var entity in Main.ControlManager.LivingPeds)
+                {
+                    if (Entity.IsInRangeOf(entity.Entity.Position, _interactionDistance))
+                    {
+                        if (_pedNearbyTicks == 0)
+                            PedNearby?.Invoke((Ped) entity.Entity, this, EventArgs.Empty);
 
                         _pedNearbyTicks++;
-
-                    } else {
-
-                        _pedNearbyTicks = 0;
-
                     }
-
+                    else
+                    {
+                        _pedNearbyTicks = 0;
+                    }
                 }
 
-                if (Entity.IsUpsideDown) {
-
-                    if (_entityUpsideDownTicks == 0) {
-                        if (UpsideDown != null)
-                            UpsideDown(this, EventArgs.Empty);
-                    }
+                if (Entity.IsUpsideDown)
+                {
+                    if (_entityUpsideDownTicks == 0)
+                        UpsideDown?.Invoke(this, EventArgs.Empty);
 
                     _entityUpsideDownTicks++;
-
-                } else {
-
+                }
+                else
+                {
                     _entityUpsideDownTicks = 0;
-
                 }
 
-                if (Entity.IsInWater) {
-
-                    if (_entityInWaterTicks == 0) {
-                        if (WaterEnter != null)
-                            WaterEnter(this, EventArgs.Empty);
-                    }
+                if (Entity.IsInWater)
+                {
+                    if (_entityInWaterTicks == 0)
+                        WaterEnter?.Invoke(this, EventArgs.Empty);
 
                     _entityInWaterTicks++;
-
-                } else {
-
+                }
+                else
+                {
                     _entityInWaterTicks = 0;
-
                 }
 
-                if (Entity.IsInAir) {
-
-                    if (_entityInAirTicks == 0) {
-                        if (AirEnter != null)
-                             AirEnter(this, EventArgs.Empty);
-                    }
+                if (Entity.IsInAir)
+                {
+                    if (_entityInAirTicks == 0)
+                        AirEnter?.Invoke(this, EventArgs.Empty);
 
                     _entityInAirTicks++;
-
-                } else {
+                }
+                else
+                {
 
                     _entityInAirTicks = 0;
 
                 }
 
-                if (Entity.IsAttached()) {
-
-                    if (_entityIsAttachedTicks == 0) {
-                        if (Attached != null)
-                            Attached(this, EventArgs.Empty);
-                    }
+                if (Entity.IsAttached())
+                {
+                    if (_entityIsAttachedTicks == 0)
+                        Attached?.Invoke(this, EventArgs.Empty);
 
                     _entityIsAttachedTicks++;
-
-                } else {
-
+                }
+                else
+                {
                     _entityIsAttachedTicks = 0;
-
                 }
 
-                if (Entity.IsTouching(Main.Player.Character)) {
-
-                    if (_playerTouchingTicks == 0) {
-                        if (TouchPlayer != null)
-                            TouchPlayer(this, EventArgs.Empty);
-                    }
+                if (Entity.IsTouching(Main.Player.Character))
+                {
+                    if (_playerTouchingTicks == 0)
+                        TouchPlayer?.Invoke(this, EventArgs.Empty);
 
                     _playerTouchingTicks++;
-
-                } else {
-
+                }
+                else
+                {
                     _pedNearbyTicks = 0;
-
                 }
 
-                if (Entity.IsInRangeOf(Main.Player.Character.Position, _interactionDistance)) {
-                  
-                    if (_playerNearbyTicks == 0) {
-                        if (PlayerNearby != null)
-                            PlayerNearby(this, EventArgs.Empty);
-                    }
+                if (Entity.IsInRangeOf(Main.Player.Character.Position, _interactionDistance))
+                {
+                    if (_playerNearbyTicks == 0)
+                        PlayerNearby?.Invoke(this, EventArgs.Empty);
 
                     _playerNearbyTicks++;
-
-                } else {
-
+                }
+                else
+                {
                     _playerNearbyTicks = 0;
-
                 }
 
                 Initialize(this, EventArgs.Empty);    
             
-            } else if (_entity.IsDead) {
-
+            }
+            else if (_entity.IsDead)
+            {
                 _aliveTicks = 0;
 
                 UI.Notify("CHECK (DEAD)!");
 
-                if (Dead != null)
-                    Dead(this, EventArgs.Empty);
+                Dead?.Invoke(this, EventArgs.Empty);
 
                 RemoveEntity();
-
             }
 
         }
@@ -312,16 +284,12 @@ namespace GTAZ.Controllable {
         /// <summary>
         /// Remove the wrapped Entity. 
         /// </summary>
-        public void RemoveEntity() {
-
-            if (_entity.CurrentBlip != null) {
+        public void RemoveEntity()
+        {
+            if (_entity.CurrentBlip != null)
                 Entity.CurrentBlip.Remove();
-            }
 
             Main.ControlManager.Remove(this);
-
         }
-
     }
-
 }

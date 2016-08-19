@@ -34,7 +34,7 @@
       <HintPath>D:\Games\SteamLibrary\SteamApps\common\Grand Theft Auto V\NativePI.dll</HintPath>
     </Reference>
     <Reference Include="ScriptHookVDotNet">
-      <HintPath>D:\Games\SteamLibrary\SteamApps\common\Grand Theft Auto V\ScriptHookVDotNet.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\ScriptHookVDotNet\ScriptHookVDotNet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Windows.Forms;
 using GTA;
 using GTA.Native;
 using GTAZ.Controllable;
 
-namespace GTAZ.Peds {
-
-    public class ZombiePed : ControllablePed {
-
+namespace GTAZ.Peds
+{
+    public class ZombiePed : ControllablePed
+    {
         public ZombiePed(int uid) : base(uid, "ZOMBIE_PED", 100f,
-            new PedProperties {
+            new PedProperties
+            {
 
                 IsFriendly = false,
                 IsZombie = true,
@@ -35,19 +35,15 @@ namespace GTAZ.Peds {
                 Teleport = false,
                 HasMenu = false
 
-            }) {
-            
+            })
+        {
             Initialize += OnInitialize;
-
         }
 
-        private void OnInitialize(object sender, EventArgs eventArgs) {
-
+        private void OnInitialize(object sender, EventArgs eventArgs)
+        {
             Ped.AlwaysKeepTask = true;
             Ped.Task.FightAgainst(Main.Player.Character);
-
         }
-
     }
-
 }

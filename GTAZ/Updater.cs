@@ -1,74 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using GTA;
 
-namespace GTAV_purge_mod {
-
-    public abstract class Updater {
-
-        private bool _active = true;
-
-        private int _activeTick;
-        private int _inactiveTick;
-
-        private readonly int _startTick;
-        private int _tick;
-
-        private Dictionary<int, Action> _actionQueue = new Dictionary<int, Action>(); 
-
-        protected Updater(int startTick = 0) {
-            _tick = startTick;
-            _startTick = startTick;
+namespace GTAZ
+{
+    public abstract class Updater
+    {
+        protected Updater(int startTick = 0)
+        {
+            Tick = startTick;
+            StartTick = startTick;
         }
 
-        public void OnTick() {
+        public void OnTick()
+        {
+            OnUpdate(Tick);
 
-            OnUpdate(_tick);
+            if (ActionQueue.ContainsKey(Tick))
+                ActionQueue[Tick].DynamicInvoke();
 
-            if (_actionQueue.ContainsKey(_tick)) {
-                _actionQueue[_tick].DynamicInvoke();
-            }
-
-            if (_tick == 0 || _tick == _startTick) {
-                
+            if (Tick == 0 || Tick == StartTick)
                 OnFirstUpdate();
 
-            }
+            if (IsActive)
+            {
+                InactiveTicks = 0;
 
-            if (_active) {
+                OnActiveUpdate(ActiveTicks, Tick);
 
-                _inactiveTick = 0;
+                if (ActiveTicks == 0)
+                    OnFirstActiveUpdate(Tick);
 
-                OnActiveUpdate(_activeTick, _tick);
-
-                if (_activeTick == 0) {
-                    OnFirstActiveUpdate(_tick);
-                }
-
-                _activeTick++;
-
+                ActiveTicks++;
             } 
             
-            if (!_active) {
+            if (!IsActive)
+            {
+                ActiveTicks = 0;
 
-                _activeTick = 0;
+                OnInactiveUpdate(InactiveTicks, Tick);
 
-                OnInactiveUpdate(_inactiveTick, _tick);
+                if (InactiveTicks == 0)
+                    OnFirstInactiveUpdate(Tick);
 
-                if (_inactiveTick == 0) {
-                    OnFirstInactiveUpdate(_tick);
-                }
-
-                _inactiveTick++;
-
+                InactiveTicks++;
             }
 
-            _tick++;
-
+            Tick++;
         }
 
         /// <summary>
-        /// Fired everytime a tick has been made.
+        /// Fired every time a tick has been made.
         /// </summary>
         /// <param name="tick">The total amount of ticks.</param>
         protected abstract void OnUpdate(int tick);
@@ -76,7 +57,8 @@ namespace GTAV_purge_mod {
         /// <summary>
         /// Fired on the absolute first update.
         /// </summary>
-        protected void OnFirstUpdate() {}
+        protected void OnFirstUpdate()
+        { }
 
         /// <summary>
         /// Fired everytime a tick has been made while active.
@@ -90,56 +72,54 @@ namespace GTAV_purge_mod {
         /// </summary>
         /// <param name="inactiveTick">The current tick on this activity state.</param>
         /// <param name="tick">The total amount of ticks.</param>
-        protected void OnInactiveUpdate(int inactiveTick, int tick) {}
+        protected void OnInactiveUpdate(int inactiveTick, int tick)
+        { }
 
         /// <summary>
         /// Fired the first time an active update has been made.
         /// </summary>
         /// <param name="tick">The total amount of ticks.</param>
-        protected void OnFirstActiveUpdate(int tick) {}
+        protected void OnFirstActiveUpdate(int tick)
+        { }
 
         /// <summary>
         /// Fired the first time an inactive update has been made.
         /// </summary>
         /// <param name="tick">The total amount of ticks.</param>
-        protected void OnFirstInactiveUpdate(int tick) {}
+        protected void OnFirstInactiveUpdate(int tick)
+        { }
 
-        public Dictionary<int, Action> ActionQueue { get { return _actionQueue; } set { _actionQueue = value; }} 
+        public Dictionary<int, Action> ActionQueue { get; set; } = new Dictionary<int, Action>();
 
         /// <summary>
         /// Returns the tick of which the ticking started.
         /// This isn't always 0, as the StartTick can be set.
         /// </summary>
-        public int StartTick { get { return _startTick; }}
+        public int StartTick { get; }
 
         /// <summary>
         /// Returns how many times this Updating instance has ticked.
         /// </summary>
-        public int Tick { get { return _tick; } }
+        public int Tick { get; private set; }
 
         /// <summary>
         /// If active, returns how many times it has been ticked during its session.
         /// </summary>
-        public int ActiveTicks { get { return _activeTick; }}
+        public int ActiveTicks { get; private set; }
 
         /// <summary>
         /// If inactive, returns how many times it has been ticked during its session.
         /// </summary>
-        public int InactiveTicks { get { return _inactiveTick; }}
+        public int InactiveTicks { get; private set; }
 
         /// <summary>
         /// Returns how many seconds this updater has been alive.
         /// </summary>
-        public int SecondsAlive { get { return _tick/1000; }}
+        public int SecondsAlive => Tick/1000;
 
         /// <summary>
         /// Returns whether this Updating instance is active.
         /// </summary>
-        public bool IsActive {
-            get { return _active; }
-            protected set { _active = value; }
-        }
-
+        public bool IsActive { get; protected set; } = true;
     }
-
 }

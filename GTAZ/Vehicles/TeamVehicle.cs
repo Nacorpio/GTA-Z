@@ -1,13 +1,12 @@
-﻿using System.Windows.Forms;
-using GTA;
+﻿using GTA;
 using GTAZ.Controllable;
 
 namespace GTAZ.Vehicles {
 
-    public class TeamVehicle : ControllableVehicle {
-
-        public TeamVehicle(int uid) : base(uid, "TEAM_VEHICLE", new VehicleProperties {
-
+    public class TeamVehicle : ControllableVehicle
+    {
+        public TeamVehicle(int uid) : base(uid, "TEAM_VEHICLE", new VehicleProperties
+        {
             Teleport = false,
             AttachBlip = true,
 
@@ -23,38 +22,7 @@ namespace GTAZ.Vehicles {
             SmashWindows = false,
             EngineHealth = 100,
             BurstTires = false
-
-
-        }) {}
-
-        #region
-
-        //protected override void OnEntityDead() {
-        //}
-
-        //protected override void OnPlayerKeyDown(KeyEventArgs e) {
-        //}
-
-        //protected override void OnEntityAliveUpdate(int tick) {
-        //}
-
-        //protected override void OnEntityInitialize() {
-        //}
-
-        //protected override void OnEntityPlayerNearbyUpdate(int tick) {
-        //}
-
-        //protected override void OnEntityPedNearby(Ped ped) {
-        //}
-
-        //protected override void OnEntityPlayerNearby() {
-        //}
-
-        //protected override void OnEntityAlive() {
-        //}
-
-        #endregion
-
+        })
+        { }
     }
-
 }

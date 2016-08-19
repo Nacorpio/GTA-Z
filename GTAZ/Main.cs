@@ -1,23 +1,18 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using GTA;
-using GTA.Math;
 using GTA.Native;
 using GTAZ.Controllable;
 using GTAZ.Inventory;
 using GTAZ.Menus;
 using GTAZ.Peds;
 using GTAZ.Population;
-using GTAZ.Props;
-using mlgthatsme.GUI;
 
 namespace GTAZ
 {
-
-    public class Main : Script {
-
+    public class Main : Script
+    {
         public static PlayerInventory PlayerInventory = new PlayerInventory();
 
         public static WindowManager WindowManager;
@@ -27,14 +22,14 @@ namespace GTAZ
         public static int EnemyGroup;
         public static int ZombieGroup;
 
-        public readonly static ControlManager ControlManager = new ControlManager();
+        public static readonly ControlManager ControlManager = new ControlManager();
         public static ControllablePopulator Populator;
 
         public static Viewport Viewport;
         public static Player Player;
 
-        public Main() {
-            
+        public Main()
+        {
             Tick += OnTick;
             KeyDown += OnKeyDown;
 
@@ -47,74 +42,69 @@ namespace GTAZ
             Populator = new ControllablePopulator(ControlManager, 8, 3, 200f, 350f);
 
             Interval = 1;
-
         }
 
-        public static void Toggle() {
-
+        public static void Toggle()
+        {
             IsToggled = !IsToggled;
-            if (!IsToggled) {
-                ControlManager.RemoveAndDeleteAll();
-            }
 
+            if (!IsToggled)
+                ControlManager.RemoveAndDeleteAll();
         }
 
-        private static void UpdateRelationships() {
-
+        private static void UpdateRelationships()
+        {
             Player.Character.RelationshipGroup = PlayerGroup;
 
-            PlayerGroup = World.AddRelationShipGroup("PLAYER");
-            EnemyGroup = World.AddRelationShipGroup("ENEMY");
-            ZombieGroup = World.AddRelationShipGroup("ZOMBIE");
+            PlayerGroup = World.AddRelationshipGroup("PLAYER");
+            EnemyGroup = World.AddRelationshipGroup("ENEMY");
+            ZombieGroup = World.AddRelationshipGroup("ZOMBIE");
 
             World.SetRelationshipBetweenGroups(Relationship.Dislike, PlayerGroup, EnemyGroup);
             World.SetRelationshipBetweenGroups(Relationship.Dislike, ZombieGroup, EnemyGroup);
             World.SetRelationshipBetweenGroups(Relationship.Dislike, PlayerGroup, ZombieGroup);
-
         }
 
-        private static void PopulateWorld() {
+        private static void PopulateWorld()
+        {
+            if (!IsToggled) return;
 
-            if (IsToggled) {
+            // _populator.PopulateWithPed(new ZombiePed(ControlManager.LivingPeds.ToList().Count), PedHash.Zombie01, Player.Character.Position, 25, 150, new Random(Game.GameTime));
+            Populator.PopulateWithRandomZombie(new ZombiePed(ControlManager.GetEntities().Count), Player.Character.Position, 25, 150, new Random(Game.GameTime));
+            Populator.PopulateWithAbandonedVehicle(Player.Character.Position, 50, 300, new Random(Game.GameTime));
 
-                // _populator.PopulateWithPed(new ZombiePed(ControlManager.LivingPeds.ToList().Count), PedHash.Zombie01, Player.Character.Position, 25, 150, new Random(Game.GameTime));
-                Populator.PopulateWithRandomZombie(new ZombiePed(ControlManager.Entities.ToList().Count), Player.Character.Position, 25, 150, new Random(Game.GameTime));
-                Populator.PopulateWithAbandonedVehicle(Player.Character.Position, 50, 300, new Random(Game.GameTime));
-
-                // Despawns all the entities that are out of its range.
-                Populator.DespawnOutOfRange();
-
-            }
-
+            // Despawns all the entities that are out of its range.
+            Populator.DespawnOutOfRange();
         }
 
-        public static void Log(object msg) {
+        public static void Log(object msg)
+        {
             File.AppendAllText("log.txt", msg + Environment.NewLine);
         }
 
-        private static void OnKeyDown(object sender, KeyEventArgs keyEventArgs) {
-
+        private static void OnKeyDown(object sender, KeyEventArgs keyEventArgs)
+        {
             ControlManager.KeyDown(keyEventArgs);
             WindowManager.KeyDown(sender, keyEventArgs);
 
-            if (keyEventArgs.KeyCode == Keys.I) {
+            if (keyEventArgs.KeyCode == Keys.I)
+            {
                 Populator.SpawnItemStack(new ItemStack(ItemsDef.ItemExample, 1), Player.Character.Position);
             }
 
-            if (WindowManager.MenuList.Count == 0) {
-
-                switch (keyEventArgs.KeyCode) {
+            if (WindowManager.MenuList.Count == 0)
+            {
+                switch (keyEventArgs.KeyCode)
+                {
                     case Keys.F7:
                         WindowManager.AddMenu(new PlayerMainMenu());
                         break;
                 }
-
             }
-
         }
 
-        private static void OnTick(object sender, EventArgs eventArgs) {
-
+        private static void OnTick(object sender, EventArgs eventArgs)
+        {
             Function.Call(Hash.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
             Function.Call(Hash.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
             Function.Call(Hash.SET_PED_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
@@ -125,9 +115,6 @@ namespace GTAZ
             WindowManager.OnTick(sender, eventArgs);
 
             PopulateWorld();
-
         }
-
     }
-
 }
